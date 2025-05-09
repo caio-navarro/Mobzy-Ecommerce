@@ -1,4 +1,4 @@
 package com.ecommerce.mobzy.models;
 
-public class Cliente {
+public class CarrinhoModels {
 }

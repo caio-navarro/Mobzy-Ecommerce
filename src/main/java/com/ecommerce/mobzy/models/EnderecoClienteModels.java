@@ -1,4 +1,4 @@
 package com.ecommerce.mobzy.models;
 
-public class ItemCarrinho {
+public class EnderecoClienteModels {
 }
