@@ -1,7 +1,7 @@
 package com.ecommerce.mobzy.models;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "clientes")
@@ -16,7 +16,7 @@ public class ClienteModels {
     private String nome;
 
     @Column(name = "data_nascimento")
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     @Column(name = "email")
     private String email;
@@ -27,27 +27,31 @@ public class ClienteModels {
     @Column(name = "cpf")
     private String cpf;
 
-    @OneToOne
+    @Column(name = "senha")
+    private String senha;
+
+    @OneToOne(optional = true)
     @JoinColumn(name = "id_endereco_cliente", insertable = false, updatable = false)
     private EnderecoClienteModels enderecoCliente;
 
     @Column(name = "id_endereco_cliente")
-    private int idEnderecoCliente;
+    private Integer idEnderecoCliente;
 
-    @OneToOne
+    @OneToOne(optional = true)
     @JoinColumn(name = "id_carrinho", insertable = false, updatable = false)
     private CarrinhoModels carrinho;
 
     @Column(name = "id_carrinho")
-    private int idCarrinho;
+    private Integer idCarrinho;
 
     public ClienteModels() {
     }
 
-    public ClienteModels(CarrinhoModels carrinho, String telefone, String nome, int idEnderecoCliente, int idCarrinho, EnderecoClienteModels enderecoCliente, String email, Date dataNascimento, String cpf) {
+    public ClienteModels(CarrinhoModels carrinho, String telefone, String nome, String senha, Integer idEnderecoCliente, Integer idCarrinho, EnderecoClienteModels enderecoCliente, String email, LocalDate dataNascimento, String cpf) {
         this.carrinho = carrinho;
         this.telefone = telefone;
         this.nome = nome;
+        this.senha = senha;
         this.idEnderecoCliente = idEnderecoCliente;
         this.idCarrinho = idCarrinho;
         this.enderecoCliente = enderecoCliente;
@@ -56,19 +60,19 @@ public class ClienteModels {
         this.cpf = cpf;
     }
 
-    public int getIdCarrinho() {
+    public Integer getIdCarrinho() {
         return idCarrinho;
     }
 
-    public void setIdCarrinho(int idCarrinho) {
+    public void setIdCarrinho(Integer idCarrinho) {
         this.idCarrinho = idCarrinho;
     }
 
-    public int getIdEnderecoCliente() {
+    public Integer getIdEnderecoCliente() {
         return idEnderecoCliente;
     }
 
-    public void setIdEnderecoCliente(int idEnderecoCliente) {
+    public void setIdEnderecoCliente(Integer idEnderecoCliente) {
         this.idEnderecoCliente = idEnderecoCliente;
     }
 
@@ -112,11 +116,11 @@ public class ClienteModels {
         this.email = email;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -126,6 +130,14 @@ public class ClienteModels {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public CarrinhoModels getCarrinho() {
