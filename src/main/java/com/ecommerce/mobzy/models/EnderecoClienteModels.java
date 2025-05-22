@@ -3,7 +3,7 @@ package com.ecommerce.mobzy.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "endereco_clientes")
+@Table(name = "enderecos_clientes")
 public class EnderecoClienteModels {
 
     @Id

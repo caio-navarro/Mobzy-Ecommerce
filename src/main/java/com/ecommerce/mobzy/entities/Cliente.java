@@ -1,89 +1,55 @@
 package com.ecommerce.mobzy.entities;
 
+import com.ecommerce.mobzy.entities.SubEntities.Cpf;
+import com.ecommerce.mobzy.entities.SubEntities.Email;
+import com.ecommerce.mobzy.entities.SubEntities.Nome;
+import com.ecommerce.mobzy.entities.SubEntities.Telefone;
 import com.ecommerce.mobzy.models.ClienteModels;
 import java.util.Date;
 
 public class Cliente {
 
     private int idCliente;
-    private String nome;
+    private Nome nome = new Nome();
     private Date dataNascimento;
-    private String email;
-    private String telefone;
-    private String cpf;
+    private Email email = new Email();
+    private Telefone telefone = new Telefone();
+    private Cpf cpf = new Cpf();
 
     public static Cliente toCliente(ClienteModels clienteModels){
         Cliente cliente = new Cliente();
 
         cliente.setIdCliente(cliente.getIdCliente());
-        cliente.setNome(cliente.getNome());
+
+        Nome nome = new Nome();
+        nome.setNome(cliente.getNome());
+        cliente.nome = nome;
+
         cliente.setDataNascimento(cliente.getDataNascimento());
+
+        Email email = new Email();
         cliente.setEmail(cliente.getEmail());
+        cliente.email = email;
+
+        Telefone telefone = new Telefone();
         cliente.setTelefone(cliente.getTelefone());
+        cliente.telefone = telefone;
+
+        Cpf cpf = new Cpf();
         cliente.setCpf(cliente.getCpf());
+        cliente.cpf = cpf;
 
         return cliente;
     }
 
-    public boolean isCpfValido() {
-        if (cpf == null || cpf.length() != 11 || !cpf.matches("\\d+")) {
-            return false;
-        }
-        int[] peso1 = {10, 9, 8, 7, 6, 5, 4, 3, 2};
-        int[] peso2 = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
 
-        try {
-            int soma1 = 0, soma2 = 0;
-            for (int i = 0; i < 9; i++) {
-                int digito = Character.getNumericValue(cpf.charAt(i));
-                soma1 += digito * peso1[i];
-                soma2 += digito * peso2[i];
-            }
-
-            int digito1 = 11 - (soma1 % 11);
-            digito1 = (digito1 > 9) ? 0 : digito1;
-
-            soma2 += digito1 * peso2[9];
-            int digito2 = 11 - (soma2 % 11);
-            digito2 = (digito2 > 9) ? 0 : digito2;
-
-            return digito1 == Character.getNumericValue(cpf.charAt(9)) &&
-                    digito2 == Character.getNumericValue(cpf.charAt(10));
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public void verificaEmail() {
-        if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Email não pode ser nulo ou vazio");
-        }
-        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Email inválido");
-        }
-    }
-
-    public void verificaTelefone() {
-        if (telefone == null || telefone.trim().isEmpty()) {
-            throw new IllegalArgumentException("O campo 'telefone' é obrigatório e não pode estar vazio.");
-        }
-        if (!telefone.matches("^\\(?\\d{2}\\)?[-.\\s]?\\d{4,5}[-.\\s]?\\d{4}$")) {
-            throw new IllegalArgumentException("O telefone deve estar no formato válido, como (XX)XXXXX-XXXX ou XX-XXXXX-XXXX.");
-        }
-    }
-
-    public void validar() {
-        verificaEmail();
-        verificaTelefone();
-        if (!isCpfValido()) throw new IllegalArgumentException("CPF inválido.");
-    }
 
     public String getCpf() {
-        return cpf;
+        return cpf.getCpf();
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        this.cpf.setCpf(cpf);
     }
 
     public Date getDataNascimento() {
@@ -95,11 +61,11 @@ public class Cliente {
     }
 
     public String getEmail() {
-        return email;
+        return email.getEmail();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.setEmail(email);
     }
 
     public int getIdCliente() {
@@ -111,18 +77,18 @@ public class Cliente {
     }
 
     public String getNome() {
-        return nome;
+        return nome.getNome();
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome.setNome(nome);
     }
 
     public String getTelefone() {
-        return telefone;
+        return telefone.getTelefone();
     }
 
     public void setTelefone(String telefone) {
-        this.telefone = telefone;
+        this.telefone.setTelefone(telefone);
     }
 }

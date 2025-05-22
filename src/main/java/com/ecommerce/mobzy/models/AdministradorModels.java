@@ -4,6 +4,7 @@ package com.ecommerce.mobzy.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "administradores")
 public class AdministradorModels {
 
     @Id

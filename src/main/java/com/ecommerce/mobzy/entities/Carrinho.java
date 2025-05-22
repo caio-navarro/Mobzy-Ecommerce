@@ -10,7 +10,7 @@ public class Carrinho {
     private double valorTotal;
 
 
-    public Carrinho toCarrinho(CarrinhoModels carrinhoModels) {
+    public static Carrinho toCarrinho(CarrinhoModels carrinhoModels) {
         Carrinho carrinho = new Carrinho();
 
         carrinho.setIdCarrinho(carrinhoModels.getIdCarrinho());

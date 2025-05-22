@@ -1,5 +1,6 @@
 package com.ecommerce.mobzy.application;
 
+import com.ecommerce.mobzy.entities.Carrinho;
 import com.ecommerce.mobzy.models.CarrinhoModels;
 import com.ecommerce.mobzy.repositories.CarrinhoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ public class CarrinhoApplication {
     CarrinhoRepository carrinhoRepository;
 
     public CarrinhoModels cadastrar (CarrinhoModels carrinhoModels) {
+        Carrinho carrinho = Carrinho.toCarrinho(carrinhoModels);
+
         return carrinhoRepository.save(carrinhoModels);
     }
 

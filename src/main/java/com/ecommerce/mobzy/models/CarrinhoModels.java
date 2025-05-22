@@ -4,6 +4,7 @@ package com.ecommerce.mobzy.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "carrinho")
 public class CarrinhoModels {
 
     @Id
@@ -14,7 +15,7 @@ public class CarrinhoModels {
     @Column(name = "valor_total")
     private double valorTotal;
 
-    //private ItenCarrinhoModels itemCarrinho;
+    //private ItemCarrinhoModels itemCarrinho;
 
 
     public int getIdCarrinho() {

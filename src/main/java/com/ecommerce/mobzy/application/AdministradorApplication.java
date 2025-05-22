@@ -1,5 +1,6 @@
 package com.ecommerce.mobzy.application;
 
+import com.ecommerce.mobzy.entities.Administrador;
 import com.ecommerce.mobzy.models.AdministradorModels;
 import com.ecommerce.mobzy.models.CarrinhoModels;
 import com.ecommerce.mobzy.repositories.AdministradorRepository;
@@ -15,6 +16,8 @@ public class AdministradorApplication {
     AdministradorRepository administradorRepository;
 
     public AdministradorModels cadastrar (AdministradorModels administradorModels) {
+
+        Administrador administrador = Administrador.toAdministrador(administradorModels);
         return administradorRepository.save(administradorModels);
     }
 

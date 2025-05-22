@@ -1,35 +1,49 @@
 package com.ecommerce.mobzy.entities;
 
+import com.ecommerce.mobzy.entities.SubEntities.Cpf;
+import com.ecommerce.mobzy.entities.SubEntities.Email;
+import com.ecommerce.mobzy.entities.SubEntities.Nome;
 import com.ecommerce.mobzy.models.AdministradorModels;
 
 public class Administrador {
 
     private int idCliente;
 
-    private String nome;
+    private Nome nome = new Nome();
 
-    private String email;
+    private Email email = new Email();
 
     private String usuario;
 
     private String senha;
 
-    private String cpf;
+    private Cpf cpf = new Cpf();
 
 
 
     public Administrador() {}
 
 
-    public Administrador toAdministrador(AdministradorModels administradorModels) {
+    public static Administrador toAdministrador(AdministradorModels administradorModels) {
         Administrador administrador = new Administrador();
 
         administrador.setIdCliente(administradorModels.getIdAdministrador());
-        administrador.setNome(administradorModels.getNome());
-        administrador.setEmail(administradorModels.getEmail());
+
+        Nome nome = new Nome();
+        nome.setNome(administradorModels.getNome());
+        administrador.nome = nome;
+
+        Email email = new Email();
+        email.setEmail(administradorModels.getEmail());
+        administrador.email = email;
+
+
         administrador.setUsuario(administradorModels.getUsuario());
         administrador.setSenha(administradorModels.getSenha());
+
+        Cpf cpf = new Cpf();
         administrador.setCpf(administradorModels.getCpf());
+        administrador.cpf = cpf;
 
         return administrador;
 
@@ -43,19 +57,19 @@ public class Administrador {
     }
 
     public String getNome() {
-        return nome;
+        return nome.getNome();
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome.setNome(nome);
     }
 
     public String getEmail() {
-        return email;
+        return email.getEmail();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.setEmail(email);
     }
 
     public String getUsuario() {
@@ -75,10 +89,10 @@ public class Administrador {
     }
 
     public String getCpf() {
-        return cpf;
+        return cpf.getCpf();
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        this.cpf.setCpf(cpf);
     }
 }
