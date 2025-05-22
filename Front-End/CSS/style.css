@@ -1,0 +1,439 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+header {
+    padding: 20px 0;
+    background-color: #fff;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+nav ul {
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cart-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 24px;
+}
+
+.hero {
+    padding: 50px 0;
+    background-color: #fff;
+}
+
+.hero-container {
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-content h2 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 30px;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shop-now-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.brands {
+    padding: 30px 0;
+    background-color:#FFDE59;
+}
+
+.brands-container {
+    background-color: #FFDE59;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.brand-logo {
+    font-weight: 600;
+    font-size: 18px;
+    color: #888;
+    padding: 10px;
+}
+
+.new-arrivals {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.product-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-info h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.product-info p {
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+}
+
+.sale {
+    padding: 60px 0;
+    background-color: #FFDE59;
+}
+
+.sale-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sale-content {
+    max-width: 500px;
+}
+
+.sale-content h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.sale-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.timer {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.time-box {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.time-box .number {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.time-box .label {
+    display: block;
+    font-size: 14px;
+    color: #888;
+}
+
+.young-favorite {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.young-favorite .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.app-download {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.app-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.app-content {
+    flex: 1;
+}
+
+.app-content h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.app-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.app-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.app-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.community {
+    padding: 60px 0;
+    background-color: #FFDE59;
+    text-align: center;
+}
+
+.community h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.community p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.email-signup {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.email-signup input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+}
+
+.email-signup button {
+    background-color: #000;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 0 4px 4px 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+footer {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    flex: 1;
+    margin-right: 40px;
+}
+
+.footer-brand h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.footer-brand p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.footer-links {
+    flex: 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-column h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer-column ul li {
+    margin-bottom: 15px;
+}
+
+.footer-column ul li a {
+    font-size: 16px;
+    color: #555;
+}
+
+@media (max-width: 991px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .hero-container {
+        flex-direction: column;
+    }
+    
+    .hero-content {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .app-content {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .app-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 767px) {
+    nav {
+        display: none;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-container {
+        flex-direction: column;
+    }
+    
+    .footer-brand {
+        margin-right: 0;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .social-icons {
+        justify-content: center;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+    }
+    
+    .footer-column {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+}

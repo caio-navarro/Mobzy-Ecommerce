@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobzy - Login e Cadastro</title>
+    <link rel="stylesheet" href="CSS/pg_login_cadastro.css">
+</head>
+<body>
+    <header>
+        <div class="logo">MOBZY</div>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="categorias.html">Categorias</a>
+            <a href="lancamentos.html">Lançamentos</a>
+            <a href="ofertas.html">Ofertas</a>
+        </nav>
+        <button class="login-btn" onclick="location.href='login.html'">Entrar</button>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <div class="form-section">
+                <div class="tabs">
+                    <div class="tab active" id="login-tab" onclick="switchTab('login')">Login</div>
+                    <div class="tab" id="register-tab" onclick="switchTab('register')">Cadastro</div>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="Seu e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" placeholder="Sua senha" required>
+                    </div>
+                    <div class="form-options">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Lembrar-me</label>
+                        </div>
+                        <a href="esqueci-senha.html">Esqueci minha senha</a>
+                    </div>
+                    <button type="submit">Entrar</button>
+
+                    <div class="switch-form">
+                        <p>Não tem uma conta? <a href="#" onclick="switchTab('register')">Cadastre-se</a></p>
+                    </div>
+                </form>
+
+                <form id="register-form" style="display:none;">
+                    <div class="form-group">
+                        <label for="reg-name">Nome completo</label>
+                        <input type="text" id="reg-name" placeholder="Seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">E-mail</label>
+                        <input type="email" id="reg-email" placeholder="Seu e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <input type="password" id="reg-password" placeholder="Crie uma senha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirmar senha</label>
+                        <input type="password" id="confirm-password" placeholder="Confirme sua senha" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">Li e concordo com os <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a></label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter">
+                        <label for="newsletter">Quero receber novidades e promoções por e-mail</label>
+                    </div>
+                    <button type="submit">Cadastrar</button>
+
+                    <div class="switch-form">
+                        <p>Já tem uma conta? <a href="#" onclick="switchTab('login')">Faça login</a></p>
+                    </div>
+                </form>
+            </div>
+            <div class="image-section">
+                <img src="Images/pg_login.png" alt="Moda e estilo">
+                <h2>Junte-se à nossa comunidade de moda</h2>
+                <p>Cadastre-se hoje e ganhe 10% de desconto na sua primeira compra!</p>
+                <p>Acesso exclusivo a lançamentos e ofertas especiais para membros.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Mobzy</h3>
+                <p>Sua loja de roupas exclusivas com os melhores preços e variedade de estilos para todos os gostos.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="categorias.html">Categorias</a></li>
+                    <li><a href="lancamentos.html">Lançamentos</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
+                    <li><a href="sobre.html">Sobre nós</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Ajuda</h3>
+                <ul>
+                    <li><a href="faq.html">Perguntas Frequentes</a></li>
+                    <li><a href="devolucoes.html">Devoluções</a></li>
+                    <li><a href="envio.html">Informações de Envio</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul>
+                    <li>contato@mobzy.com.br</li>
+                    <li>+55 (11) 99999-9999</li>
+                    <li>Rua Getúlio, 123 - Feira De Santana, BA</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mobzy. Todos os direitos reservados.</p>
+            <div class="footer-legal">
+                <a href="termos.html">Termos de Uso</a>
+                <a href="privacidade.html">Política de Privacidade</a>
+                <a href="cookies.html">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="JS/pg_login_cadastro.js"></script>
+</body>
+</html>
