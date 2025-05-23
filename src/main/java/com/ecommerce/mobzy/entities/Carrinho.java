@@ -9,13 +9,15 @@ public class Carrinho {
 
     private double valorTotal;
 
+    private ItemCarrinho itemCarrinho;
+
 
     public Carrinho toCarrinho(CarrinhoModels carrinhoModels) {
         Carrinho carrinho = new Carrinho();
 
         carrinho.setIdCarrinho(carrinhoModels.getIdCarrinho());
         carrinho.setValorTotal(carrinhoModels.getValorTotal());
-        // item carrinho ainda falta
+        carrinho.setItemCarrinho(carrinhoModels.getItemCarrinho());
         return carrinho;
     }
 
@@ -38,5 +40,13 @@ public class Carrinho {
 
     public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public ItemCarrinho getItemCarrinho() {
+        return itemCarrinho;
+    }
+
+    public void setItemCarrinho(ItemCarrinho itemCarrinho) {
+        this.itemCarrinho = itemCarrinho;
     }
 }

@@ -1,6 +1,7 @@
 package com.ecommerce.mobzy.models;
 
 
+import com.ecommerce.mobzy.entities.ItemCarrinho;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,10 +12,11 @@ public class CarrinhoModels {
     @Column(name = "id_carrinho")
     private int idCarrinho;
 
+    @Column(name = "itens_carrinho")
+    private ItemCarrinhoModels itemCarrinho;
+
     @Column(name = "valor_total")
     private double valorTotal;
-
-    //private ItenCarrinhoModels itemCarrinho;
 
 
     public int getIdCarrinho() {
@@ -23,6 +25,14 @@ public class CarrinhoModels {
 
     public void setIdCarrinho(int idCarrinho) {
         this.idCarrinho = idCarrinho;
+    }
+
+    public ItemCarrinho getItemCarrinho() {
+        return itemCarrinho;
+    }
+
+    public void setItemCarrinho(ItemCarrinhoModels itemCarrinho) {
+        this.itemCarrinho = itemCarrinho;
     }
 
     public double getValorTotal() {
