@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Mobzy</title>
+    <link rel="stylesheet" href="CSS/dashboard_adm.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <div class="logo">MOBZY</div>
+        <nav>
+            <a href="dashboard-admin.html">Dashboard</a>
+            <a href="pedidos.html">Pedidos</a>
+            <a href="clientes.html">Clientes</a>
+            <a href="relatorios.html">Relatórios</a>
+        </nav>
+        <div class="user-info">
+            <span>Admin</span>
+            <a href="pg_login_cadastro.html"><button class="logout-btn" onclick="logout()">Sair</button></a>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Dashboard Administrativo</h1>
+                <p>Gerencie produtos, pedidos e clientes da sua loja</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-label">Total de Produtos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">567</div>
+                    <div class="stat-label">Pedidos Este Mês</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2,890</div>
+                    <div class="stat-label">Clientes Ativos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">R$ 45.670</div>
+                    <div class="stat-label">Faturamento Mensal</div>
+                </div>
+            </div>
+
+            <div class="actions-section">
+                <h2>Ações Rápidas</h2>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="openModal('add-product')">Cadastrar Produto</button>
+                    <button class="action-btn" onclick="exportarProdutos()">Exportar Produtos</button>
+                    <button class="action-btn" onclick="importarProdutos()">Importar Produtos</button>
+                    <button class="action-btn danger" onclick="confirmarLimpeza()">Limpar Estoque</button>
+                </div>
+            </div>
+
+            <div class="products-section">
+                <div class="products-header">
+                    <h2>Gerenciar Produtos</h2>
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Buscar produtos..." onkeyup="filtrarProdutos()">
+                        <select class="filter-select" id="category-filter" onchange="filtrarProdutos()">
+                            <option value="">Todas as Categorias</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="acessorios">Acessórios</option>
+                            <option value="calcados">Calçados</option>
+                        </select>
+                        <select class="filter-select" id="status-filter" onchange="filtrarProdutos()">
+                            <option value="">Todos os Status</option>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="products-grid">
+                    <!-- Produtos ficaram aq -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Adicionar produtos / Editar  -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Adicionar Produto</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-name">Nome do Produto</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">Preço (R$)</label>
+                        <input type="number" id="product-price" step="0.01" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-category">Categoria</label>
+                        <select id="product-category" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="acessorios">Acessórios</option>
+                            <option value="calcados">Calçados</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-stock">Estoque</label>
+                        <input type="number" id="product-stock" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-description">Descrição</label>
+                    <textarea id="product-description" placeholder="Descrição detalhada do produto"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-sizes">Tamanhos Disponíveis</label>
+                        <input type="text" id="product-sizes" placeholder="Ex: P, M, G, GG">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-colors">Cores Disponíveis</label>
+                        <input type="text" id="product-colors" placeholder="Ex: Azul, Vermelho, Preto">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-images">Imagens do Produto</label>
+                    <input type="file" id="product-images" multiple accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="product-status">Status</label>
+                    <select id="product-status" required>
+                        <option value="ativo">Ativo</option>
+                        <option value="inativo">Inativo</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 15px; justify-content: flex-end; margin-block-start: 30px;">
+                    <button type="button" onclick="closeModal()" style="background-color: #ccc; color: #333; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="action-btn">Salvar Produto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Mobzy - Dashboard Administrativo. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dados dos produtos já cadastrados
+        let produtos = [
+            {
+                id: 1,
+                nome: "Camiseta Básica Masculina",
+                preco: 39.90,
+                categoria: "masculino",
+                estoque: 50,
+                status: "ativo",
+                descricao: "Camiseta básica de algodão, confortável e versátil",
+                tamanhos: ["P", "M", "G", "GG"],
+                cores: ["Branco", "Preto", "Azul"]
+            },
+            {
+                id: 2,
+                nome: "Vestido Floral Feminino",
+                preco: 89.90,
+                categoria: "feminino",
+                estoque: 25,
+                status: "ativo",
+                descricao: "Vestido midi com estampa floral, perfeito para o verão",
+                tamanhos: ["P", "M", "G"],
+                cores: ["Rosa", "Azul", "Branco"]
+            },
+            {
+                id: 3,
+                nome: "Tênis Esportivo",
+                preco: 159.90,
+                categoria: "calcados",
+                estoque: 15,
+                status: "ativo",
+                descricao: "Tênis confortável para prática de exercícios",
+                tamanhos: ["38", "39", "40", "41", "42"],
+                cores: ["Preto", "Branco", "Cinza"]
+            },
+            {
+                id: 4,
+                nome: "Bolsa de Couro",
+                preco: 129.90,
+                categoria: "acessorios",
+                estoque: 8,
+                status: "inativo",
+                descricao: "Bolsa elegante de couro sintético",
+                tamanhos: ["Único"],
+                cores: ["Marrom", "Preto", "Caramelo"]
+            }
+        ];
+
+        let produtoEditando = null;
+
+        // Função para carregar e exibir produtos
+        function carregarProdutos() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            produtos.forEach(produto => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image">Imagem do Produto</div>
+                    <div class="product-info">
+                        <div class="product-name">${produto.nome}</div>
+                        <div class="product-price">R$ ${produto.preco.toFixed(2)}</div>
+                        <span class="product-status ${produto.status === 'ativo' ? 'status-active' : 'status-inactive'}">
+                            ${produto.status}
+                        </span>
+                        <div style="margin-block-end: 10px;">
+                            <small>Estoque: ${produto.estoque} unidades</small>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-small btn-edit" onclick="editarProduto(${produto.id})">Editar</button>
+                            <button class="btn-small btn-delete" onclick="excluirProduto(${produto.id})">Excluir</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Função para detalhar produto
+        function openModal(tipo, produto = null) {
+            const modal = document.getElementById('product-modal');
+            const title = document.getElementById('modal-title');
+            
+            if (tipo === 'add-product') {
+                title.textContent = 'Adicionar Produto';
+                limparFormulario();
+                produtoEditando = null;
+            } else if (tipo === 'edit-product') {
+                title.textContent = 'Editar Produto';
+                preencherFormulario(produto);
+                produtoEditando = produto;
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        // Função para fechar o detalhe produto
+        function closeModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        // Função para limpar 
+        function limparFormulario() {
+            document.getElementById('product-form').reset();
+        }
+
+        // Função para preencher formulário com dados do produto
+        function preencherFormulario(produto) {
+            document.getElementById('product-name').value = produto.nome;
+            document.getElementById('product-price').value = produto.preco;
+            document.getElementById('product-category').value = produto.categoria;
+            document.getElementById('product-stock').value = produto.estoque;
+            document.getElementById('product-description').value = produto.descricao;
+            document.getElementById('product-sizes').value = produto.tamanhos.join(', ');
+            document.getElementById('product-colors').value = produto.cores.join(', ');
+            document.getElementById('product-status').value = produto.status;
+        }
+
+        // Função para editar produto
+        function editarProduto(id) {
+            const produto = produtos.find(p => p.id === id);
+            if (produto) {
+                openModal('edit-product', produto);
+            }
+        }
+
+        // Função para excluir produto
+        function excluirProduto(id) {
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                produtos = produtos.filter(p => p.id !== id);
+                carregarProdutos();
+                alert('Produto excluído com sucesso!');
+            }
+        }
+
+        // Função para filtrar produtos
+        function filtrarProdutos() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+
+            const produtosFiltrados = produtos.filter(produto => {
+                const matchesSearch = produto.nome.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || produto.categoria === categoryFilter;
+                const matchesStatus = !statusFilter || produto.status === statusFilter;
+                
+                return matchesSearch && matchesCategory && matchesStatus;
+            });
+
+            // Atualizar grid com produtos filtrados
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            produtosFiltrados.forEach(produto => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image">Imagem do Produto</div>
+                    <div class="product-info">
+                        <div class="product-name">${produto.nome}</div>
+                        <div class="product-price">R$ ${produto.preco.toFixed(2)}</div>
+                        <span class="product-status ${produto.status === 'ativo' ? 'status-active' : 'status-inactive'}">
+                            ${produto.status}
+                        </span>
+                        <div style="margin-block-end: 10px;">
+                            <small>Estoque: ${produto.estoque} unidades</small>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-small btn-edit" onclick="editarProduto(${produto.id})">Editar</button>
+                            <button class="btn-small btn-delete" onclick="excluirProduto(${produto.id})">Excluir</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Event listener para o formulário
+        document.getElementById('product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                nome: document.getElementById('product-name').value,
+                preco: parseFloat(document.getElementById('product-price').value),
+                categoria: document.getElementById('product-category').value,
+                estoque: parseInt(document.getElementById('product-stock').value),
+                descricao: document.getElementById('product-description').value,
+                tamanhos: document.getElementById('product-sizes').value.split(',').map(s => s.trim()),
+                cores: document.getElementById('product-colors').value.split(',').map(s => s.trim()),
+                status: document.getElementById('product-status').value
+            };
+
+            if (produtoEditando) {
+                // Atualizar produto existente
+                const index = produtos.findIndex(p => p.id === produtoEditando.id);
+                produtos[index] = { ...produtos[index], ...formData };
+                alert('Produto atualizado com sucesso!');
+            } else {
+                // Adicionar novo produto
+                const novoProduto = {
+                    id: Date.now(),
+                    ...formData
+                };
+                produtos.push(novoProduto);
+                alert('Produto cadastrado com sucesso!');
+            }
+
+            closeModal();
+            carregarProdutos();
+        });
+
+        // Outras funções
+        function logout() {
+            if (confirm('Deseja realmente sair?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function exportarProdutos() {
+            alert('Exportando produtos para Excel...');
+        }
+
+        function importarProdutos() {
+            alert('Funcionalidade de importação em desenvolvimento...');
+        }
+
+        function confirmarLimpeza() {
+            if (confirm('ATENÇÃO: Esta ação irá remover todos os produtos do estoque. Deseja continuar?')) {
+                produtos = [];
+                carregarProdutos();
+                alert('Estoque limpo com sucesso!');
+            }
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('product-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Carregar produtos ao inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarProdutos();
+        });
+    </script>
+</body>
+</html>
