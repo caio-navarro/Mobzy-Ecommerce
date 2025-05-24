@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Cliente - Mobzy</title>
+    <link rel="stylesheet" href="CSS/dashboard_cliente.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Mobzy</div>
+        <nav>
+            <a href="#" onclick="showSection('produtos')" class="nav-link active">Produtos</a>
+            <a href="#" onclick="showSection('perfil')" class="nav-link">Meu Perfil</a>
+            <a href="#" onclick="showSection('pedidos')" class="nav-link">Meus Pedidos</a>
+        </nav>
+        <div class="user-info">
+            <div class="cart-icon" onclick="showSection('carrinho')">
+                🛒
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <span>Cliente</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Seção Produtos -->
+            <div id="produtos-section" class="section active">
+                <div class="section-header">
+                    <h1>Produtos Disponíveis</h1>
+                    <p>Descubra nossa coleção exclusiva</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filters-row">
+                        <div class="search-bar">
+                            <input type="text" id="search-input" placeholder="Buscar produtos..." onkeyup="filtrarProdutos()">
+                        </div>
+                        <select class="filter-select" id="category-filter" onchange="filtrarProdutos()">
+                            <option value="">Todas as Categorias</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="acessorios">Acessórios</option>
+                            <option value="calcados">Calçados</option>
+                        </select>
+                        <select class="filter-select" id="price-filter" onchange="filtrarProdutos()">
+                            <option value="">Todos os Preços</option>
+                            <option value="0-50">Até R$ 50</option>
+                            <option value="50-100">R$ 50 - R$ 100</option>
+                            <option value="100-200">R$ 100 - R$ 200</option>
+                            <option value="200+">Acima de R$ 200</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="products-grid">
+                    <!-- Produtos serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Seção Carrinho -->
+            <div id="carrinho-section" class="section">
+                <div class="section-header">
+                    <h1>Meu Carrinho</h1>
+                    <p>Revise seus itens antes de finalizar a compra</p>
+                </div>
+
+                <div class="cart-section">
+                    <div id="cart-items">
+                        <!-- Itens do carrinho serão carregados aqui -->
+                    </div>
+                    <div class="cart-total" id="cart-total" style="display: none;">
+                        <div class="total-price">Total: R$ <span id="total-amount">0.00</span></div>
+                        <button class="checkout-btn" onclick="finalizarCompra()">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção Pedidos -->
+            <div id="pedidos-section" class="section">
+                <div class="section-header">
+                    <h1>Meus Pedidos</h1>
+                    <p>Acompanhe o status dos seus pedidos</p>
+                </div>
+
+                <div class="orders-list" id="orders-list">
+                    <!-- Pedidos serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Seção Perfil -->
+            <div id="perfil-section" class="section">
+                <div class="section-header">
+                    <h1>Meu Perfil</h1>
+                    <p>Gerencie suas informações pessoais</p>
+                </div>
+
+                <form class="profile-form" id="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" placeholder="João Silva" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" placeholder="joao@email.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" placeholder="123.456.789-00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" placeholder="Rua das Flores, 123" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" placeholder="Salvador" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" placeholder="01234-567" required>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-block-start: 30px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 12px 30px; font-size: 16px;">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detalhes do Produto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-product-name">Produto</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modal-product-content">
+                <!-- Conteúdo do produto será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos produtos (simulando dados vindos do back)
+        let produtos = [
+            {
+                id: 1,
+                nome: "Camiseta Básica Masculina",
+                preco: 39.90,
+                categoria: "masculino",
+                estoque: 50,
+                status: "ativo",
+                descricao: "Camiseta básica de algodão, confortável e versátil para o dia a dia. Tecido macio e respirável.",
+                tamanhos: ["P", "M", "G", "GG"],
+                cores: ["Branco", "Preto", "Azul"]
+            },
+            {
+                id: 2,
+                nome: "Vestido Floral Feminino",
+                preco: 89.90,
+                categoria: "feminino",
+                estoque: 25,
+                status: "ativo",
+                descricao: "Vestido midi com estampa floral delicada, perfeito para ocasiões especiais e uso casual.",
+                tamanhos: ["P", "M", "G"],
+                cores: ["Rosa", "Azul", "Branco"]
+            },
+            {
+                id: 3,
+                nome: "Tênis Esportivo",
+                preco: 159.90,
+                categoria: "calcados",
+                estoque: 15,
+                status: "ativo",
+                descricao: "Tênis confortável e moderno, ideal para prática de exercícios e atividades do dia a dia.",
+                tamanhos: ["38", "39", "40", "41", "42"],
+                cores: ["Preto", "Branco", "Cinza"]
+            },
+            {
+                id: 4,
+                nome: "Bolsa de Couro Premium",
+                preco: 199.90,
+                categoria: "acessorios",
+                estoque: 8,
+                status: "ativo",
+                descricao: "Bolsa elegante de couro sintético de alta qualidade, com acabamento refinado e espaço interno otimizado.",
+                tamanhos: ["Único"],
+                cores: ["Marrom", "Preto", "Caramelo"]
+            },
+            {
+                id: 5,
+                nome: "Jaqueta Jeans Masculina",
+                preco: 129.90,
+                categoria: "masculino",
+                estoque: 20,
+                status: "ativo",
+                descricao: "Jaqueta jeans clássica com lavagem especial, perfeita para compor looks casuais e modernos.",
+                tamanhos: ["P", "M", "G", "GG"],
+                cores: ["Azul Claro", "Azul Escuro", "Preto"]
+            }
+        ];
+
+        let carrinho = [];
+        let pedidos = [
+            {
+                id: 1001,
+                data: "2025-05-20",
+                status: "entregue",
+                total: 229.80,
+                itens: [
+                    { nome: "Camiseta Básica Masculina", quantidade: 2, preco: 39.90 },
+                    { nome: "Vestido Floral Feminino", quantidade: 1, preco: 89.90 }
+                ]
+            },
+            {
+                id: 1002,
+                data: "2025-05-22",
+                status: "pendente",
+                total: 159.90,
+                itens: [
+                    { nome: "Tênis Esportivo", quantidade: 1, preco: 159.90 }
+                ]
+            }
+        ];
+
+        // Função para mostrar seções
+        function showSection(sectionName) {
+            // Ocultar todas as seções
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remover classe active de todos os nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Mostrar seção selecionada
+            document.getElementById(sectionName + '-section').classList.add('active');
+
+            // Adicionar classe active ao nav link correspondente
+            if (sectionName !== 'carrinho') {
+                event.target.classList.add('active');
+            }
+
+            // Carregar conteúdo específico
+            switch(sectionName) {
+                case 'produtos':
+                    carregarProdutos();
+                    break;
+                case 'carrinho':
+                    carregarCarrinho();
+                    break;
+                case 'pedidos':
+                    carregarPedidos();
+                    break;
+            }
+        }
+
+        // Função para carregar produtos
+        function carregarProdutos() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            const produtosAtivos = produtos.filter(p => p.status === 'ativo');
+
+            produtosAtivos.forEach(produto => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => abrirDetalheProduto(produto);
+                card.innerHTML = `
+                    <div class="product-image">Imagem do Produto</div>
+                    <div class="product-info">
+                        <div class="product-name">${produto.nome}</div>
+                        <div class="product-price">R$ ${produto.preco.toFixed(2)}</div>
+                        <div style="font-size: 14px; color: #666; margin-block-end: 10px;">
+                            ${produto.descricao.substring(0, 80)}...
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary" onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id})">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="btn btn-secondary" onclick="event.stopPropagation(); abrirDetalheProduto(${produto.id})">
+                                Ver Detalhes
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Função para filtrar produtos
+        function filtrarProdutos() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const priceFilter = document.getElementById('price-filter').value;
+
+            let produtosFiltrados = produtos.filter(produto => {
+                if (produto.status !== 'ativo') return false;
+                
+                const matchesSearch = produto.nome.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || produto.categoria === categoryFilter;
+                
+                let matchesPrice = true;
+                if (priceFilter) {
+                    const price = produto.preco;
+                    switch(priceFilter) {
+                        case '0-50':
+                            matchesPrice = price <= 50;
+                            break;
+                        case '50-100':
+                            matchesPrice = price > 50 && price <= 100;
+                            break;
+                        case '100-200':
+                            matchesPrice = price > 100 && price <= 200;
+                            break;
+                        case '200+':
+                            matchesPrice = price > 200;
+                            break;
+                    }
+                }
+                
+                return matchesSearch && matchesCategory && matchesPrice;
+            });
+
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            produtosFiltrados.forEach(produto => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => abrirDetalheProduto(produto);
+                card.innerHTML = `
+                    <div class="product-image">Imagem do Produto</div>
+                    <div class="product-info">
+                        <div class="product-name">${produto.nome}</div>
+                        <div class="product-price">R$ ${produto.preco.toFixed(2)}</div>
+                        <div style="font-size: 14px; color: #666; margin-block-end: 10px;">
+                            ${produto.descricao.substring(0, 80)}...
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary" onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id})">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="btn btn-secondary" onclick="event.stopPropagation(); abrirDetalheProduto(${produto.id})">
+                                Ver Detalhes
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Função para abrir detalhes do produto
+        function abrirDetalheProduto(produtoId) {
+            const produto = produtos.find(p => p.id === produtoId);
+            if (!produto) return;
+
+            document.getElementById('modal-product-name').textContent = produto.nome;
+            
+            const modalContent = document.getElementById('modal-product-content');
+            modalContent.innerHTML = `
+                <div class="product-detail-image">Imagem do Produto</div>
+                <div style="margin-block-end: 20px;">
+                    <div class="product-price" style="font-size: 24px; margin-block-end: 10px;">R$ ${produto.preco.toFixed(2)}</div>
+                    <p style="color: #666; line-height: 1.6;">${produto.descricao}</p>
+                </div>
+                
+                <div class="product-variations">
+                    <div class="variation-group">
+                        <label>Tamanho:</label>
+                        <div class="variation-options" id="size-options">
+                            ${produto.tamanhos.map(tamanho => `
+                                <div class="variation-option" onclick="selectVariation(this, 'tamanho', '${tamanho}')">${tamanho}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="variation-group">
+                        <label>Cor:</label>
+                        <div class="variation-options" id="color-options">
+                            ${produto.cores.map(cor => `
+                                <div class="variation-option" onclick="selectVariation(this, 'cor', '${cor}')">${cor}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-block-start: 30px;">
+                    <button class="btn btn-primary" style="padding: 15px 30px; font-size: 16px;" onclick="adicionarAoCarrinhoComVariacoes(${produto.id})">
+                        Adicionar ao Carrinho
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('product-modal').style.display = 'block';
+        }
+
+        // Função para selecionar variações
+        function selectVariation(element, type, value) {
+            // Remove seleção anterior do mesmo tipo
+            const siblings = element.parentNode.querySelectorAll('.variation-option');
+            siblings.forEach(sibling => sibling.classList.remove('selected'));
+            
+            // Adiciona seleção ao elemento clicado
+            element.classList.add('selected');
+            element.setAttribute('data-selected', value);
+        }
+
+        // Função para adicionar ao carrinho
+        function adicionarAoCarrinho(produtoId, tamanho = null, cor = null) {
+            const produto = produtos.find(p => p.id === produtoId);
+            if (!produto) return;
+
+            const itemCarrinho = {
+                id: Date.now(),
+                produtoId: produto.id,
+                nome: produto.nome,
+                preco: produto.preco,
+                quantidade: 1,
+                tamanho: tamanho || produto.tamanhos[0],
+                cor: cor || produto.cores[0],
+                imagem: "Imagem do Produto"
+            };
+
+            carrinho.push(itemCarrinho);
+            atualizarContadorCarrinho();
+            alert('Produto adicionado ao carrinho!');
+        }
+
+        // Função para adicionar ao carrinho com variações selecionadas
+        function adicionarAoCarrinhoComVariacoes(produtoId) {
+            const tamanhoSelecionado = document.querySelector('#size-options .variation-option.selected');
+            const corSelecionada = document.querySelector('#color-options .variation-option.selected');
+
+            if (!tamanhoSelecionado || !corSelecionada) {
+                alert('Por favor, selecione um tamanho e uma cor.');
+                return;
+            }
+
+            adicionarAoCarrinho(
+                produtoId, 
+                tamanhoSelecionado.getAttribute('data-selected'),
+                corSelecionada.getAttribute('data-selected')
+            );
+            
+            closeModal();
+        }
+
+        // Função para carregar carrinho
+        function carregarCarrinho() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            if (carrinho.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Seu carrinho está vazio</h3>
+                        <p>Adicione produtos para começar suas compras</p>
+                        <button class="btn btn-primary" onclick="showSection('produtos')" style="margin-block-start: 20px;">
+                            Ver Produtos
+                        </button>
+                    </div>
+                `;
+                cartTotal.style.display = 'none';
+                return;
+            }
+
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            carrinho.forEach(item => {
+                total += item.preco * item.quantidade;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">${item.imagem}</div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.nome}</div>
+                        <div class="cart-item-details">Tamanho: ${item.tamanho} | Cor: ${item.cor}</div>
+                        <div class="cart-item-price">R$ ${item.preco.toFixed(2)}</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="alterarQuantidade(${item.id}, -1)">-</button>
+                        <span>${item.quantidade}</span>
+                        <button class="quantity-btn" onclick="alterarQuantidade(${item.id}, 1)">+</button>
+                    </div>
+                    <button class="btn btn-secondary" onclick="removerDoCarrinho(${item.id})" style="background-color: #ff4757;">
+                        Remover
+                    </button>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+
+            document.getElementById('total-amount').textContent = total.toFixed(2);
+            cartTotal.style.display = 'block';
+        }
+
+        // Função para alterar quantidade
+        function alterarQuantidade(itemId, mudanca) {
+            const item = carrinho.find(i => i.id === itemId);
+            if (!item) return;
+
+            item.quantidade += mudanca;
+            
+            if (item.quantidade <= 0) {
+                removerDoCarrinho(itemId);
+            } else {
+                carregarCarrinho();
+                atualizarContadorCarrinho();
+            }
+        }
+
+        // Função para remover do carrinho
+        function removerDoCarrinho(itemId) {
+            carrinho = carrinho.filter(item => item.id !== itemId);
+            carregarCarrinho();
+            atualizarContadorCarrinho();
+        }
+
+        // Função para atualizar contador do carrinho
+        function atualizarContadorCarrinho() {
+            const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+            document.getElementById('cart-count').textContent = totalItens;
+            
+            if (totalItens === 0) {
+                document.getElementById('cart-count').style.display = 'none';
+            } else {
+                document.getElementById('cart-count').style.display = 'flex';
+            }
+        }
+
+        // Função para finalizar compra
+        function finalizarCompra() {
+            if (carrinho.length === 0) return;
+
+            const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+            
+            const novoPedido = {
+                id: Date.now(),
+                data: new Date().toISOString().split('T')[0],
+                status: "pendente",
+                total: total,
+                itens: carrinho.map(item => ({
+                    nome: item.nome,
+                    quantidade: item.quantidade,
+                    preco: item.preco,
+                    tamanho: item.tamanho,
+                    cor: item.cor
+                }))
+            };
+
+            pedidos.unshift(novoPedido);
+            carrinho = [];
+            atualizarContadorCarrinho();
+            
+            alert(`Pedido realizado com sucesso! Número do pedido: ${novoPedido.id}`);
+            showSection('pedidos');
+        }
+
+        // Função para carregar pedidos
+        function carregarPedidos() {
+            const ordersList = document.getElementById('orders-list');
+
+            if (pedidos.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Você ainda não fez nenhum pedido</h3>
+                        <p>Comece a comprar para ver seus pedidos aqui</p>
+                        <button class="btn btn-primary" onclick="showSection('produtos')" style="margin-block-start: 20px;">
+                            Ver Produtos
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            ordersList.innerHTML = '';
+
+            pedidos.forEach(pedido => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.innerHTML = `
+                    <div class="order-header">
+                        <div class="order-id">Pedido #${pedido.id}</div>
+                        <span class="order-status status-${pedido.status}">${pedido.status}</span>
+                    </div>
+                    <div style="margin-block-end: 10px;">
+                        <strong>Data:</strong> ${new Date(pedido.data).toLocaleDateString('pt-BR')}
+                    </div>
+                    <div style="margin-block-end: 15px;">
+                        <strong>Itens:</strong>
+                        <ul style="margin-inline-start: 20px; margin-block-start: 5px;">
+                            ${pedido.itens.map(item => `
+                                <li>${item.nome} (${item.quantidade}x) - R$ ${(item.preco * item.quantidade).toFixed(2)}
+                                    ${item.tamanho ? ` | Tamanho: ${item.tamanho}` : ''}
+                                    ${item.cor ? ` | Cor: ${item.cor}` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    <div style="text-align: end; font-weight: bold; font-size: 18px; color: #FFD700;">
+                        Total: R$ ${pedido.total.toFixed(2)}
+                    </div>
+                `;
+                ordersList.appendChild(orderItem);
+            });
+        }
+
+        // Função para fechar modal
+        function closeModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        // Função de logout
+        function logout() {
+            if (confirm('Deseja realmente sair?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Event listener para o formulário de perfil
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Perfil atualizado com sucesso!');
+        });
+
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('product-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarProdutos();
+            atualizarContadorCarrinho();
+        });
+    </script>
+</body>
+</html>
