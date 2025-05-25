@@ -167,50 +167,227 @@
     <script>
         // Dados dos produtos já cadastrados
         let produtos = [
-            {
-                id: 1,
-                nome: "Camiseta Básica Masculina",
-                preco: 39.90,
-                categoria: "masculino",
-                estoque: 50,
-                status: "ativo",
-                descricao: "Camiseta básica de algodão, confortável e versátil",
-                tamanhos: ["P", "M", "G", "GG"],
-                cores: ["Branco", "Preto", "Azul"]
-            },
-            {
-                id: 2,
-                nome: "Vestido Floral Feminino",
-                preco: 89.90,
-                categoria: "feminino",
-                estoque: 25,
-                status: "ativo",
-                descricao: "Vestido midi com estampa floral, perfeito para o verão",
-                tamanhos: ["P", "M", "G"],
-                cores: ["Rosa", "Azul", "Branco"]
-            },
-            {
-                id: 3,
-                nome: "Tênis Esportivo",
-                preco: 159.90,
-                categoria: "calcados",
-                estoque: 15,
-                status: "ativo",
-                descricao: "Tênis confortável para prática de exercícios",
-                tamanhos: ["38", "39", "40", "41", "42"],
-                cores: ["Preto", "Branco", "Cinza"]
-            },
-            {
-                id: 4,
-                nome: "Bolsa de Couro",
-                preco: 129.90,
-                categoria: "acessorios",
-                estoque: 8,
-                status: "inativo",
-                descricao: "Bolsa elegante de couro sintético",
-                tamanhos: ["Único"],
-                cores: ["Marrom", "Preto", "Caramelo"]
-            }
+    {
+        id: 1,
+        nome: "Camiseta Básica Masculina",
+        preco: 39.90,
+        categoria: "masculino",
+        estoque: 50,
+        status: "ativo",
+        descricao: "Camiseta básica de algodão, confortável e versátil",
+        tamanhos: ["P", "M", "G", "GG"],
+        cores: ["Branco", "Preto", "Azul"]
+    },
+    {
+        id: 2,
+        nome: "Vestido Floral Feminino",
+        preco: 89.90,
+        categoria: "feminino",
+        estoque: 25,
+        status: "ativo",
+        descricao: "Vestido midi com estampa floral, perfeito para o verão",
+        tamanhos: ["P", "M", "G"],
+        cores: ["Rosa", "Azul", "Branco"]
+    },
+    {
+        id: 3,
+        nome: "Tênis Esportivo",
+        preco: 159.90,
+        categoria: "calcados",
+        estoque: 15,
+        status: "ativo",
+        descricao: "Tênis confortável para prática de exercícios",
+        tamanhos: ["38", "39", "40", "41", "42"],
+        cores: ["Preto", "Branco", "Cinza"]
+    },
+    {
+        id: 4,
+        nome: "Bolsa de Couro",
+        preco: 129.90,
+        categoria: "acessorios",
+        estoque: 8,
+        status: "inativo",
+        descricao: "Bolsa elegante de couro sintético",
+        tamanhos: ["Único"],
+        cores: ["Marrom", "Preto", "Caramelo"]
+    },
+    {
+        id: 5,
+        nome: "Relógio de Pulso Digital",
+        preco: 89.90,
+        categoria: "acessorios",
+        estoque: 15,
+        status: "ativo",
+        descricao: "Relógio digital resistente à água com pulseira de silicone",
+        tamanhos: ["Único"],
+        cores: ["Preto", "Azul", "Vermelho"]
+    },
+    {
+        id: 6,
+        nome: "Cinto de Couro Masculino",
+        preco: 59.90,
+        categoria: "acessorios",
+        estoque: 20,
+        status: "ativo",
+        descricao: "Cinto de couro sintético com fivela metálica",
+        tamanhos: ["M", "G", "GG"],
+        cores: ["Preto", "Marrom"]
+    },
+    {
+        id: 7,
+        nome: "Carteira Feminina Compacta",
+        preco: 45.90,
+        categoria: "acessorios",
+        estoque: 12,
+        status: "ativo",
+        descricao: "Carteira pequena com vários compartimentos",
+        tamanhos: ["Único"],
+        cores: ["Rosa", "Bege", "Preto"]
+    },
+    {
+        id: 8,
+        nome: "Pulseira Fitness Unissex",
+        preco: 99.90,
+        categoria: "acessorios",
+        estoque: 10,
+        status: "ativo",
+        descricao: "Pulseira inteligente com contador de passos e batimentos",
+        tamanhos: ["Único"],
+        cores: ["Preto", "Verde", "Roxo"]
+    },
+    {
+        id: 9,
+        nome: "Óculos de Sol Masculino",
+        preco: 69.90,
+        categoria: "acessorios",
+        estoque: 18,
+        status: "ativo",
+        descricao: "Óculos com lente polarizada e armação leve",
+        tamanhos: ["Único"],
+        cores: ["Preto", "Cinza", "Marrom"]
+    },
+    {
+        id: 10,
+        nome: "Colar Feminino Dourado",
+        preco: 39.90,
+        categoria: "acessorios",
+        estoque: 25,
+        status: "ativo",
+        descricao: "Colar delicado com pingente de coração",
+        tamanhos: ["Único"],
+        cores: ["Dourado"]
+    },
+    {
+        id: 11,
+        nome: "Brinco Argola Média",
+        preco: 24.90,
+        categoria: "acessorios",
+        estoque: 30,
+        status: "ativo",
+        descricao: "Par de argolas folheadas, ideal para o dia a dia",
+        tamanhos: ["Único"],
+        cores: ["Dourado", "Prateado"]
+    },
+    {
+        id: 12,
+        nome: "Mochila Casual Unissex",
+        preco: 119.90,
+        categoria: "acessorios",
+        estoque: 14,
+        status: "ativo",
+        descricao: "Mochila com divisórias internas e saída para fone",
+        tamanhos: ["Único"],
+        cores: ["Preto", "Cinza", "Azul"]
+    },
+    {
+        id: 13,
+        nome: "Chapéu Panamá Masculino",
+        preco: 54.90,
+        categoria: "acessorios",
+        estoque: 9,
+        status: "inativo",
+        descricao: "Chapéu elegante e leve para ocasiões ao ar livre",
+        tamanhos: ["M", "G"],
+        cores: ["Bege", "Branco"]
+    },
+    {
+        id: 14,
+        nome: "Bolsa Transversal Feminina",
+        preco: 84.90,
+        categoria: "acessorios",
+        estoque: 16,
+        status: "ativo",
+        descricao: "Bolsa pequena e prática com alça ajustável",
+        tamanhos: ["Único"],
+        cores: ["Preto", "Vermelho", "Nude"]
+    },
+    {
+        id: 15,
+        nome: "Luva de Inverno Térmica",
+        preco: 39.90,
+        categoria: "acessorios",
+        estoque: 22,
+        status: "ativo",
+        descricao: "Luva forrada com toque de tela para smartphones",
+        tamanhos: ["P", "M", "G"],
+        cores: ["Preto", "Cinza"]
+    },
+    {
+        id: 16,
+        nome: "Tiaras Decoradas Infantil",
+        preco: 19.90,
+        categoria: "infantil",
+        estoque: 35,
+        status: "ativo",
+        descricao: "Kit com 3 tiaras coloridas e enfeitadas",
+        tamanhos: ["Único"],
+        cores: ["Rosa", "Lilás", "Amarelo"]
+    },
+    {
+        id: 17,
+        nome: "Mochila Escolar Infantil",
+        preco: 89.90,
+        categoria: "infantil",
+        estoque: 11,
+        status: "ativo",
+        descricao: "Mochila com rodinhas e estampa de personagens",
+        tamanhos: ["Único"],
+        cores: ["Azul", "Rosa", "Verde"]
+    },
+    {
+        id: 18,
+        nome: "Relógio Infantil com Luzes",
+        preco: 49.90,
+        categoria: "infantil",
+        estoque: 20,
+        status: "ativo",
+        descricao: "Relógio colorido com luzes LED e cronômetro",
+        tamanhos: ["Único"],
+        cores: ["Azul", "Rosa", "Laranja"]
+    },
+    {
+        id: 19,
+        nome: "Chinelo Infantil Estampado",
+        preco: 29.90,
+        categoria: "infantil",
+        estoque: 28,
+        status: "ativo",
+        descricao: "Chinelo leve com personagens divertidos",
+        tamanhos: ["28", "30", "32", "34"],
+        cores: ["Azul", "Vermelho", "Roxo"]
+    },
+    {
+        id: 20,
+        nome: "Gorro Infantil de Lã",
+        preco: 22.90,
+        categoria: "infantil",
+        estoque: 13,
+        status: "inativo",
+        descricao: "Gorro quentinho e macio para o inverno",
+        tamanhos: ["Único"],
+        cores: ["Azul", "Cinza", "Vermelho"]
+    }
+            
         ];
 
         let produtoEditando = null;
