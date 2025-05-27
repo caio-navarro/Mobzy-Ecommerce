@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Cliente - Mobzy</title>
     <link rel="stylesheet" href="CSS/dashboard_cliente.css">
 </head>
+
 <body>
     <header>
         <div class="logo">Mobzy</div>
@@ -37,7 +38,8 @@
                 <div class="filters">
                     <div class="filters-row">
                         <div class="search-bar">
-                            <input type="text" id="search-input" placeholder="Buscar produtos..." onkeyup="filtrarProdutos()">
+                            <input type="text" id="search-input" placeholder="Buscar produtos..."
+                                onkeyup="filtrarProdutos()">
                         </div>
                         <select class="filter-select" id="category-filter" onchange="filtrarProdutos()">
                             <option value="">Todas as Categorias</option>
@@ -102,22 +104,22 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nome">Nome Completo</label>
-                            <input type="text" id="nome" placeholder="João Silva" required>
+                            <input type="text" id="nome" required>
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input type="email" id="email" placeholder="joao@email.com" required>
+                            <input type="email" id="email" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="telefone">Telefone</label>
-                            <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+                            <input type="tel" id="telefone" required>
                         </div>
                         <div class="form-group">
                             <label for="cpf">CPF</label>
-                            <input type="text" id="cpf" placeholder="123.456.789-00" required>
+                            <input type="text" id="cpf" required>
                         </div>
                     </div>
 
@@ -163,237 +165,237 @@
     <script>
         // Dados dos produtos (simulando dados vindos do back)
         let produtos = [
-    {
-        id: 1,
-        nome: "Camiseta Básica Masculina",
-        preco: 39.90,
-        categoria: "masculino",
-        estoque: 50,
-        status: "ativo",
-        descricao: "Camiseta básica de algodão, confortável e versátil para o dia a dia. Tecido macio e respirável.",
-        tamanhos: ["P", "M", "G", "GG"],
-        cores: ["Branco", "Preto", "Azul"]
-    },
-    {
-        id: 2,
-        nome: "Vestido Floral Feminino",
-        preco: 89.90,
-        categoria: "feminino",
-        estoque: 25,
-        status: "ativo",
-        descricao: "Vestido midi com estampa floral delicada, perfeito para ocasiões especiais e uso casual.",
-        tamanhos: ["P", "M", "G"],
-        cores: ["Rosa", "Azul", "Branco"]
-    },
-    {
-        id: 3,
-        nome: "Tênis Esportivo",
-        preco: 159.90,
-        categoria: "calcados",
-        estoque: 15,
-        status: "ativo",
-        descricao: "Tênis confortável e moderno, ideal para prática de exercícios e atividades do dia a dia.",
-        tamanhos: ["38", "39", "40", "41", "42"],
-        cores: ["Preto", "Branco", "Cinza"]
-    },
-    {
-        id: 4,
-        nome: "Bolsa de Couro Premium",
-        preco: 199.90,
-        categoria: "acessorios",
-        estoque: 8,
-        status: "ativo",
-        descricao: "Bolsa elegante de couro sintético de alta qualidade, com acabamento refinado e espaço interno otimizado.",
-        tamanhos: ["Único"],
-        cores: ["Marrom", "Preto", "Caramelo"]
-    },
-    {
-        id: 5,
-        nome: "Jaqueta Jeans Masculina",
-        preco: 129.90,
-        categoria: "masculino",
-        estoque: 20,
-        status: "ativo",
-        descricao: "Jaqueta jeans clássica com lavagem especial, perfeita para compor looks casuais e modernos.",
-        tamanhos: ["P", "M", "G", "GG"],
-        cores: ["Azul Claro", "Azul Escuro", "Preto"]
-    },
-    {
-        id: 5,
-        nome: "Relógio de Pulso Digital",
-        preco: 89.90,
-        categoria: "acessorios",
-        estoque: 15,
-        status: "ativo",
-        descricao: "Relógio digital resistente à água com pulseira de silicone",
-        tamanhos: ["Único"],
-        cores: ["Preto", "Azul", "Vermelho"]
-    },
-    {
-        id: 6,
-        nome: "Cinto de Couro Masculino",
-        preco: 59.90,
-        categoria: "acessorios",
-        estoque: 20,
-        status: "ativo",
-        descricao: "Cinto de couro sintético com fivela metálica",
-        tamanhos: ["M", "G", "GG"],
-        cores: ["Preto", "Marrom"]
-    },
-    {
-        id: 7,
-        nome: "Carteira Feminina Compacta",
-        preco: 45.90,
-        categoria: "acessorios",
-        estoque: 12,
-        status: "ativo",
-        descricao: "Carteira pequena com vários compartimentos",
-        tamanhos: ["Único"],
-        cores: ["Rosa", "Bege", "Preto"]
-    },
-    {
-        id: 8,
-        nome: "Pulseira Fitness Unissex",
-        preco: 99.90,
-        categoria: "acessorios",
-        estoque: 10,
-        status: "ativo",
-        descricao: "Pulseira inteligente com contador de passos e batimentos",
-        tamanhos: ["Único"],
-        cores: ["Preto", "Verde", "Roxo"]
-    },
-    {
-        id: 9,
-        nome: "Óculos de Sol Masculino",
-        preco: 69.90,
-        categoria: "acessorios",
-        estoque: 18,
-        status: "ativo",
-        descricao: "Óculos com lente polarizada e armação leve",
-        tamanhos: ["Único"],
-        cores: ["Preto", "Cinza", "Marrom"]
-    },
-    {
-        id: 10,
-        nome: "Colar Feminino Dourado",
-        preco: 39.90,
-        categoria: "acessorios",
-        estoque: 25,
-        status: "ativo",
-        descricao: "Colar delicado com pingente de coração",
-        tamanhos: ["Único"],
-        cores: ["Dourado"]
-    },
-    {
-        id: 11,
-        nome: "Brinco Argola Média",
-        preco: 24.90,
-        categoria: "acessorios",
-        estoque: 30,
-        status: "ativo",
-        descricao: "Par de argolas folheadas, ideal para o dia a dia",
-        tamanhos: ["Único"],
-        cores: ["Dourado", "Prateado"]
-    },
-    {
-        id: 12,
-        nome: "Mochila Casual Unissex",
-        preco: 119.90,
-        categoria: "acessorios",
-        estoque: 14,
-        status: "ativo",
-        descricao: "Mochila com divisórias internas e saída para fone",
-        tamanhos: ["Único"],
-        cores: ["Preto", "Cinza", "Azul"]
-    },
-    {
-        id: 13,
-        nome: "Chapéu Panamá Masculino",
-        preco: 54.90,
-        categoria: "acessorios",
-        estoque: 9,
-        status: "inativo",
-        descricao: "Chapéu elegante e leve para ocasiões ao ar livre",
-        tamanhos: ["M", "G"],
-        cores: ["Bege", "Branco"]
-    },
-    {
-        id: 14,
-        nome: "Bolsa Transversal Feminina",
-        preco: 84.90,
-        categoria: "acessorios",
-        estoque: 16,
-        status: "ativo",
-        descricao: "Bolsa pequena e prática com alça ajustável",
-        tamanhos: ["Único"],
-        cores: ["Preto", "Vermelho", "Nude"]
-    },
-    {
-        id: 15,
-        nome: "Luva de Inverno Térmica",
-        preco: 39.90,
-        categoria: "acessorios",
-        estoque: 22,
-        status: "ativo",
-        descricao: "Luva forrada com toque de tela para smartphones",
-        tamanhos: ["P", "M", "G"],
-        cores: ["Preto", "Cinza"]
-    },
-    {
-        id: 16,
-        nome: "Tiaras Decoradas Infantil",
-        preco: 19.90,
-        categoria: "infantil",
-        estoque: 35,
-        status: "ativo",
-        descricao: "Kit com 3 tiaras coloridas e enfeitadas",
-        tamanhos: ["Único"],
-        cores: ["Rosa", "Lilás", "Amarelo"]
-    },
-    {
-        id: 17,
-        nome: "Mochila Escolar Infantil",
-        preco: 89.90,
-        categoria: "infantil",
-        estoque: 11,
-        status: "ativo",
-        descricao: "Mochila com rodinhas e estampa de personagens",
-        tamanhos: ["Único"],
-        cores: ["Azul", "Rosa", "Verde"]
-    },
-    {
-        id: 18,
-        nome: "Relógio Infantil com Luzes",
-        preco: 49.90,
-        categoria: "infantil",
-        estoque: 20,
-        status: "ativo",
-        descricao: "Relógio colorido com luzes LED e cronômetro",
-        tamanhos: ["Único"],
-        cores: ["Azul", "Rosa", "Laranja"]
-    },
-    {
-        id: 19,
-        nome: "Chinelo Infantil Estampado",
-        preco: 29.90,
-        categoria: "infantil",
-        estoque: 28,
-        status: "ativo",
-        descricao: "Chinelo leve com personagens divertidos",
-        tamanhos: ["28", "30", "32", "34"],
-        cores: ["Azul", "Vermelho", "Roxo"]
-    },
-    {
-        id: 20,
-        nome: "Gorro Infantil de Lã",
-        preco: 22.90,
-        categoria: "infantil",
-        estoque: 13,
-        status: "inativo",
-        descricao: "Gorro quentinho e macio para o inverno",
-        tamanhos: ["Único"],
-        cores: ["Azul", "Cinza", "Vermelho"]
-    }
+            {
+                id: 1,
+                nome: "Camiseta Básica Masculina",
+                preco: 39.90,
+                categoria: "masculino",
+                estoque: 50,
+                status: "ativo",
+                descricao: "Camiseta básica de algodão, confortável e versátil para o dia a dia. Tecido macio e respirável.",
+                tamanhos: ["P", "M", "G", "GG"],
+                cores: ["Branco", "Preto", "Azul"]
+            },
+            {
+                id: 2,
+                nome: "Vestido Floral Feminino",
+                preco: 89.90,
+                categoria: "feminino",
+                estoque: 25,
+                status: "ativo",
+                descricao: "Vestido midi com estampa floral delicada, perfeito para ocasiões especiais e uso casual.",
+                tamanhos: ["P", "M", "G"],
+                cores: ["Rosa", "Azul", "Branco"]
+            },
+            {
+                id: 3,
+                nome: "Tênis Esportivo",
+                preco: 159.90,
+                categoria: "calcados",
+                estoque: 15,
+                status: "ativo",
+                descricao: "Tênis confortável e moderno, ideal para prática de exercícios e atividades do dia a dia.",
+                tamanhos: ["38", "39", "40", "41", "42"],
+                cores: ["Preto", "Branco", "Cinza"]
+            },
+            {
+                id: 4,
+                nome: "Bolsa de Couro Premium",
+                preco: 199.90,
+                categoria: "acessorios",
+                estoque: 8,
+                status: "ativo",
+                descricao: "Bolsa elegante de couro sintético de alta qualidade, com acabamento refinado e espaço interno otimizado.",
+                tamanhos: ["Único"],
+                cores: ["Marrom", "Preto", "Caramelo"]
+            },
+            {
+                id: 5,
+                nome: "Jaqueta Jeans Masculina",
+                preco: 129.90,
+                categoria: "masculino",
+                estoque: 20,
+                status: "ativo",
+                descricao: "Jaqueta jeans clássica com lavagem especial, perfeita para compor looks casuais e modernos.",
+                tamanhos: ["P", "M", "G", "GG"],
+                cores: ["Azul Claro", "Azul Escuro", "Preto"]
+            },
+            {
+                id: 5,
+                nome: "Relógio de Pulso Digital",
+                preco: 89.90,
+                categoria: "acessorios",
+                estoque: 15,
+                status: "ativo",
+                descricao: "Relógio digital resistente à água com pulseira de silicone",
+                tamanhos: ["Único"],
+                cores: ["Preto", "Azul", "Vermelho"]
+            },
+            {
+                id: 6,
+                nome: "Cinto de Couro Masculino",
+                preco: 59.90,
+                categoria: "acessorios",
+                estoque: 20,
+                status: "ativo",
+                descricao: "Cinto de couro sintético com fivela metálica",
+                tamanhos: ["M", "G", "GG"],
+                cores: ["Preto", "Marrom"]
+            },
+            {
+                id: 7,
+                nome: "Carteira Feminina Compacta",
+                preco: 45.90,
+                categoria: "acessorios",
+                estoque: 12,
+                status: "ativo",
+                descricao: "Carteira pequena com vários compartimentos",
+                tamanhos: ["Único"],
+                cores: ["Rosa", "Bege", "Preto"]
+            },
+            {
+                id: 8,
+                nome: "Pulseira Fitness Unissex",
+                preco: 99.90,
+                categoria: "acessorios",
+                estoque: 10,
+                status: "ativo",
+                descricao: "Pulseira inteligente com contador de passos e batimentos",
+                tamanhos: ["Único"],
+                cores: ["Preto", "Verde", "Roxo"]
+            },
+            {
+                id: 9,
+                nome: "Óculos de Sol Masculino",
+                preco: 69.90,
+                categoria: "acessorios",
+                estoque: 18,
+                status: "ativo",
+                descricao: "Óculos com lente polarizada e armação leve",
+                tamanhos: ["Único"],
+                cores: ["Preto", "Cinza", "Marrom"]
+            },
+            {
+                id: 10,
+                nome: "Colar Feminino Dourado",
+                preco: 39.90,
+                categoria: "acessorios",
+                estoque: 25,
+                status: "ativo",
+                descricao: "Colar delicado com pingente de coração",
+                tamanhos: ["Único"],
+                cores: ["Dourado"]
+            },
+            {
+                id: 11,
+                nome: "Brinco Argola Média",
+                preco: 24.90,
+                categoria: "acessorios",
+                estoque: 30,
+                status: "ativo",
+                descricao: "Par de argolas folheadas, ideal para o dia a dia",
+                tamanhos: ["Único"],
+                cores: ["Dourado", "Prateado"]
+            },
+            {
+                id: 12,
+                nome: "Mochila Casual Unissex",
+                preco: 119.90,
+                categoria: "acessorios",
+                estoque: 14,
+                status: "ativo",
+                descricao: "Mochila com divisórias internas e saída para fone",
+                tamanhos: ["Único"],
+                cores: ["Preto", "Cinza", "Azul"]
+            },
+            {
+                id: 13,
+                nome: "Chapéu Panamá Masculino",
+                preco: 54.90,
+                categoria: "acessorios",
+                estoque: 9,
+                status: "inativo",
+                descricao: "Chapéu elegante e leve para ocasiões ao ar livre",
+                tamanhos: ["M", "G"],
+                cores: ["Bege", "Branco"]
+            },
+            {
+                id: 14,
+                nome: "Bolsa Transversal Feminina",
+                preco: 84.90,
+                categoria: "acessorios",
+                estoque: 16,
+                status: "ativo",
+                descricao: "Bolsa pequena e prática com alça ajustável",
+                tamanhos: ["Único"],
+                cores: ["Preto", "Vermelho", "Nude"]
+            },
+            {
+                id: 15,
+                nome: "Luva de Inverno Térmica",
+                preco: 39.90,
+                categoria: "acessorios",
+                estoque: 22,
+                status: "ativo",
+                descricao: "Luva forrada com toque de tela para smartphones",
+                tamanhos: ["P", "M", "G"],
+                cores: ["Preto", "Cinza"]
+            },
+            {
+                id: 16,
+                nome: "Tiaras Decoradas Infantil",
+                preco: 19.90,
+                categoria: "infantil",
+                estoque: 35,
+                status: "ativo",
+                descricao: "Kit com 3 tiaras coloridas e enfeitadas",
+                tamanhos: ["Único"],
+                cores: ["Rosa", "Lilás", "Amarelo"]
+            },
+            {
+                id: 17,
+                nome: "Mochila Escolar Infantil",
+                preco: 89.90,
+                categoria: "infantil",
+                estoque: 11,
+                status: "ativo",
+                descricao: "Mochila com rodinhas e estampa de personagens",
+                tamanhos: ["Único"],
+                cores: ["Azul", "Rosa", "Verde"]
+            },
+            {
+                id: 18,
+                nome: "Relógio Infantil com Luzes",
+                preco: 49.90,
+                categoria: "infantil",
+                estoque: 20,
+                status: "ativo",
+                descricao: "Relógio colorido com luzes LED e cronômetro",
+                tamanhos: ["Único"],
+                cores: ["Azul", "Rosa", "Laranja"]
+            },
+            {
+                id: 19,
+                nome: "Chinelo Infantil Estampado",
+                preco: 29.90,
+                categoria: "infantil",
+                estoque: 28,
+                status: "ativo",
+                descricao: "Chinelo leve com personagens divertidos",
+                tamanhos: ["28", "30", "32", "34"],
+                cores: ["Azul", "Vermelho", "Roxo"]
+            },
+            {
+                id: 20,
+                nome: "Gorro Infantil de Lã",
+                preco: 22.90,
+                categoria: "infantil",
+                estoque: 13,
+                status: "inativo",
+                descricao: "Gorro quentinho e macio para o inverno",
+                tamanhos: ["Único"],
+                cores: ["Azul", "Cinza", "Vermelho"]
+            }
         ];
 
         let carrinho = [];
@@ -440,7 +442,7 @@
             }
 
             // Carregar conteúdo específico
-            switch(sectionName) {
+            switch (sectionName) {
                 case 'produtos':
                     carregarProdutos();
                     break;
@@ -494,14 +496,14 @@
 
             let produtosFiltrados = produtos.filter(produto => {
                 if (produto.status !== 'ativo') return false;
-                
+
                 const matchesSearch = produto.nome.toLowerCase().includes(searchTerm);
                 const matchesCategory = !categoryFilter || produto.categoria === categoryFilter;
-                
+
                 let matchesPrice = true;
                 if (priceFilter) {
                     const price = produto.preco;
-                    switch(priceFilter) {
+                    switch (priceFilter) {
                         case '0-50':
                             matchesPrice = price <= 50;
                             break;
@@ -516,7 +518,7 @@
                             break;
                     }
                 }
-                
+
                 return matchesSearch && matchesCategory && matchesPrice;
             });
 
@@ -555,7 +557,7 @@
             if (!produto) return;
 
             document.getElementById('modal-product-name').textContent = produto.nome;
-            
+
             const modalContent = document.getElementById('modal-product-content');
             modalContent.innerHTML = `
                 <div class="product-detail-image">Imagem do Produto</div>
@@ -599,7 +601,7 @@
             // Remove seleção anterior do mesmo tipo
             const siblings = element.parentNode.querySelectorAll('.variation-option');
             siblings.forEach(sibling => sibling.classList.remove('selected'));
-            
+
             // Adiciona seleção ao elemento clicado
             element.classList.add('selected');
             element.setAttribute('data-selected', value);
@@ -637,11 +639,11 @@
             }
 
             adicionarAoCarrinho(
-                produtoId, 
+                produtoId,
                 tamanhoSelecionado.getAttribute('data-selected'),
                 corSelecionada.getAttribute('data-selected')
             );
-            
+
             closeModal();
         }
 
@@ -669,7 +671,7 @@
 
             carrinho.forEach(item => {
                 total += item.preco * item.quantidade;
-                
+
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item';
                 cartItem.innerHTML = `
@@ -701,7 +703,7 @@
             if (!item) return;
 
             item.quantidade += mudanca;
-            
+
             if (item.quantidade <= 0) {
                 removerDoCarrinho(itemId);
             } else {
@@ -721,7 +723,7 @@
         function atualizarContadorCarrinho() {
             const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
             document.getElementById('cart-count').textContent = totalItens;
-            
+
             if (totalItens === 0) {
                 document.getElementById('cart-count').style.display = 'none';
             } else {
@@ -734,7 +736,7 @@
             if (carrinho.length === 0) return;
 
             const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
-            
+
             const novoPedido = {
                 id: Date.now(),
                 data: new Date().toISOString().split('T')[0],
@@ -752,7 +754,7 @@
             pedidos.unshift(novoPedido);
             carrinho = [];
             atualizarContadorCarrinho();
-            
+
             alert(`Pedido realizado com sucesso! Número do pedido: ${novoPedido.id}`);
             showSection('pedidos');
         }
@@ -819,13 +821,13 @@
         }
 
         // Event listener para o formulário de perfil
-        document.getElementById('profile-form').addEventListener('submit', function(e) {
+        document.getElementById('profile-form').addEventListener('submit', function (e) {
             e.preventDefault();
             alert('Perfil atualizado com sucesso!');
         });
 
         // Fechar modal ao clicar fora dele
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const modal = document.getElementById('product-modal');
             if (event.target === modal) {
                 closeModal();
@@ -833,10 +835,32 @@
         }
 
         // Inicialização
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             carregarProdutos();
             atualizarContadorCarrinho();
         });
+
+        // carregar dados do meu perfil.
+        document.addEventListener("DOMContentLoaded", function () {
+            const idCliente = localStorage.getItem('idCliente');
+            const nomeCliente = localStorage.getItem('nomeCliente');
+            const emailCliente = localStorage.getItem('emailCliente');
+            const telCliente = localStorage.getItem('telCliente');
+            const cpfCliente = localStorage.getItem('cpfCliente');
+
+            if (!idCliente) {
+                alert("Você precisa estar logado.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            document.getElementById("nome").value = nomeCliente;
+            document.getElementById("email").value = emailCliente;
+            document.getElementById("telefone").value = telCliente;
+            document.getElementById("cpf").value = cpfCliente;
+        });
+
     </script>
 </body>
+
 </html>
