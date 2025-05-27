@@ -18,18 +18,14 @@ public class ItemCarrinho {
         validar();
     }
 
-
     public static ItemCarrinho toItemCarrinho(ItemCarrinhoModels itemModels) {
         ItemCarrinho item = new ItemCarrinho();
+
         item.setIdItemCarrinho(itemModels.getIdItemCarrinho());
-        Produto produtoConvertido = Produto.toProduto(itemModels.getProduto());
-        item.setProduto(produtoConvertido);
+        item.setProduto(itemModels.getProduto());
         item.setQuantidade(itemModels.getQuantidade());
 
         return item;
-    }
-
-    private void setProduto(Produto produtoConvertido) {
     }
 
     public void validar() {
@@ -51,9 +47,6 @@ public class ItemCarrinho {
             throw new IllegalArgumentException("A quantidade excede o limite permitido (1000).");
         }
     }
-
-
-    // Getters e Setters
 
     public int getIdItemCarrinho() {
         return idItemCarrinho;
@@ -87,5 +80,9 @@ public class ItemCarrinho {
                 ", produto=" + produto +
                 ", quantidade=" + quantidade +
                 '}';
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 }

@@ -30,14 +30,14 @@ public class ClienteModels {
     @Column(name = "senha")
     private String senha;
 
-    @OneToOne(optional = true)
+    @OneToOne
     @JoinColumn(name = "id_endereco_cliente", insertable = false, updatable = false)
     private EnderecoClienteModels enderecoCliente;
 
     @Column(name = "id_endereco_cliente")
     private Integer idEnderecoCliente;
 
-    @OneToOne(optional = true)
+    @OneToOne
     @JoinColumn(name = "id_carrinho", insertable = false, updatable = false)
     private CarrinhoModels carrinho;
 

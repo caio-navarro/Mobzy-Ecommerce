@@ -34,4 +34,9 @@ public class ClienteController {
     public void atualizar(@RequestBody ClienteModels cliente){
         clienteApplication.atualizar(cliente);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody ClienteModels cliente){
+        return clienteApplication.login(cliente);
+    }
 }
