@@ -34,8 +34,6 @@ public class ProdutoModels {
     @JoinColumn(name = "id_administrador", insertable = false, updatable = false)
     private AdministradorModels administrador;
 
-
-
     public ProdutoModels() {}
 
     public ProdutoModels(int idProduto, int estoque, String descricao, String nome, double preco) {

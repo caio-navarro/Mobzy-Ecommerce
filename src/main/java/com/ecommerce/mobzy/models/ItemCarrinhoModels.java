@@ -1,6 +1,5 @@
 package com.ecommerce.mobzy.models;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -9,7 +8,6 @@ public class ItemCarrinhoModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id_itens_carrinho")
     private int idItemCarrinho;
 
@@ -17,12 +15,18 @@ public class ItemCarrinhoModels {
     private int quantidade;
 
     @ManyToOne
-    @JoinColumn(name = "id_produto", nullable = false)
+    @JoinColumn(name = "id_produto", nullable = false, insertable = false, updatable = false)
     private ProdutoModels produto;
 
+    @Column(name = "id_produto")
+    private int idProduto;
+
     @ManyToOne
-    @JoinColumn(name = "id_carrinho", nullable = false)
+    @JoinColumn(name = "id_carrinho", nullable = false, insertable = false, updatable = false)
     private CarrinhoModels carrinho;
+
+    @Column(name = "id_carrinho")
+    private int idCarrinho;
 
     public ItemCarrinhoModels() {}
 
