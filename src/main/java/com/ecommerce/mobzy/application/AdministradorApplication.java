@@ -1,7 +1,6 @@
 package com.ecommerce.mobzy.application;
 
 import com.ecommerce.mobzy.models.AdministradorModels;
-import com.ecommerce.mobzy.models.CarrinhoModels;
 import com.ecommerce.mobzy.repositories.AdministradorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

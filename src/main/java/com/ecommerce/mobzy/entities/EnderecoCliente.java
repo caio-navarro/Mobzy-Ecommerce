@@ -62,7 +62,7 @@ public class EnderecoCliente {
         logradouroIsInvalid();
         numeroIsInvalid();
         cidadeIsInvalid();
-        estadoIsInvalid();
+        //estadoIsInvalid();
         cepIsInvalid();
     }
 

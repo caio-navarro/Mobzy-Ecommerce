@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/endereco-cliente")
+@CrossOrigin(origins = "*")
 public class EnderecoClienteController {
 
     @Autowired

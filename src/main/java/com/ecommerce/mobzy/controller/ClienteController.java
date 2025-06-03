@@ -35,6 +35,11 @@ public class ClienteController {
         clienteApplication.atualizar(cliente);
     }
 
+    @GetMapping("/buscar/{id}")
+    public ClienteModels buscarPorId(@PathVariable int id) {
+        return clienteApplication.buscarPorId(id);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody ClienteModels cliente){
         return clienteApplication.login(cliente);
