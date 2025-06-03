@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/item-carrinho")
+@CrossOrigin(origins = "*")
 public class ItemCarrinhoController {
 
     private final ItemCarrinhoApplication itemCarrinhoApplication;

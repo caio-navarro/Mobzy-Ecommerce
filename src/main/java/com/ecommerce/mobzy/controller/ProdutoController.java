@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produto")
+@CrossOrigin(origins = "*")
 public class ProdutoController {
 
     private final ProdutoApplication produtoApplication;
@@ -23,7 +24,7 @@ public class ProdutoController {
         return produtoApplication.listar();
     }
 
-    @DeleteMapping("/deletar{id}")
+    @DeleteMapping("/deletar/{id}")
     public void deletar(@PathVariable int id) {
         produtoApplication.deletar(id);
     }

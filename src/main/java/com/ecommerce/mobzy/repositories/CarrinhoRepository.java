@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CarrinhoRepository extends JpaRepository<CarrinhoModels, Integer> {
-
+    
 }

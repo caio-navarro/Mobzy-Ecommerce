@@ -24,7 +24,7 @@ public class ClienteApplication {
     public ResponseEntity<?> cadastrar(ClienteModels clienteModels) {
         try {
             Cliente cliente = Cliente.toCliente(clienteModels);
-            cliente.validarDadosObrigatorios();
+            cliente.validarCompleto();
 
             clienteRepository.save(clienteModels);
 

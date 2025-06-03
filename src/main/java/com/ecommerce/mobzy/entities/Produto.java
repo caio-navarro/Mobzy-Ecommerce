@@ -9,6 +9,7 @@ public class Produto {
     private String descricao;
     private double preco;
     private int estoque;
+    private String status;
 
     public Produto() {
     }
@@ -30,6 +31,7 @@ public class Produto {
         produto.setDescricao(produtoModels.getDescricao());
         produto.setPreco(produtoModels.getPreco());
         produto.setEstoque(produtoModels.getEstoque());
+        produto.setStatus(produtoModels.getStatus());
 
         return produto;
     }
@@ -109,5 +111,13 @@ public class Produto {
     public void setEstoque(int estoque) {
         this.estoque = estoque;
         estoqueIsInvalid();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

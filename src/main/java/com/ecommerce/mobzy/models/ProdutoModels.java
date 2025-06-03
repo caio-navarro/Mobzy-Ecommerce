@@ -1,6 +1,5 @@
 package com.ecommerce.mobzy.models;
 
-
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -27,6 +26,9 @@ public class ProdutoModels {
     @Column(name = "preco")
     private double preco;
 
+    @Column(name = "status")
+    private String status = "ativo";
+
     @OneToMany(mappedBy = "produto")
     private List<ItemCarrinhoModels> itensCarrinho;
 
@@ -51,6 +53,14 @@ public class ProdutoModels {
 
     public void setId(int id) {
         this.idProduto = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getEstoque() {
