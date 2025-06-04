@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Mobzy</title>
+    <link rel="stylesheet" href="CSS/dashboard_adm.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <div class="logo">MOBZY</div>
+        <div class="user-info">
+            <span>Admin</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Dashboard Administrativo</h1>
+                <p>Gerencie produtos, pedidos e clientes da sua loja</p>
+            </div>
+
+            <div class="actions-section">
+                <h2>Ações Rápidas</h2>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="openModal('add-product')">Cadastrar Produto</button>
+                    <button class="action-btn" onclick="exportarProdutos()">Exportar Produtos</button>
+                </div>
+            </div>
+
+            <div class="products-section">
+                <div class="products-header">
+                    <h2>Gerenciar Produtos</h2>
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Buscar produtos..." onkeyup="filtrarProdutos()">
+                        <select class="filter-select" id="status-filter" onchange="filtrarProdutos()">
+                            <option value="">Todos os Status</option>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="products-grid">
+                    <!-- Produtos ficaram aq -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Adicionar/Editar Produto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Adicionar Produto</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-name">Nome do Produto</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">Preço (R$)</label>
+                        <input type="number" id="product-price" step="0.01" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-stock">Estoque</label>
+                        <input type="number" id="product-stock" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-status">Status</label>
+                        <select id="product-status" required>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-description">Descrição</label>
+                    <textarea id="product-description" placeholder="Descrição detalhada do produto"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto</label>
+                    <input type="file" id="product-image" accept="image/*" onchange="previewImagem(this)">
+                    <div id="image-preview" style="display: none; margin-top: 10px;"></div>
+                </div>
+
+                <div style="display: flex; gap: 15px; justify-content: flex-end; margin-block-start: 30px;">
+                    <button type="button" onclick="closeModal()" style="background-color: #ccc; color: #333; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="action-btn">Salvar Produto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Mobzy - Dashboard Administrativo. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="JS/dash_adm.js"></script>
+</body>
+</html>

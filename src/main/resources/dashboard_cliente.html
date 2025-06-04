@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Cliente - Mobzy</title>
+    <link rel="stylesheet" href="CSS/dashboard_cliente.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">Mobzy</div>
+        <nav>
+            <a href="#" onclick="showSection('produtos')" class="nav-link active">Produtos</a>
+            <a href="#" onclick="showSection('perfil')" class="nav-link">Meu Perfil</a>
+            <a href="#" onclick="showSection('pedidos')" class="nav-link">Meus Pedidos</a>
+        </nav>
+        <div class="user-info">
+            <div class="cart-icon" onclick="showSection('carrinho')">
+                🛒
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <span>Cliente</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Seção Produtos -->
+            <div id="produtos-section" class="section active">
+                <div class="section-header">
+                    <h1>Produtos Disponíveis</h1>
+                    <p>Descubra nossa coleção exclusiva</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filters-row">
+                        <div class="search-bar">
+                            <input type="text" id="search-input" placeholder="Buscar produtos..."
+                                onkeyup="filtrarProdutos()">
+                        </div>
+                        <select class="filter-select" id="price-filter" onchange="filtrarProdutos()">
+                            <option value="">Todos os Preços</option>
+                            <option value="0-50">Até R$ 50</option>
+                            <option value="50-100">R$ 50 - R$ 100</option>
+                            <option value="100-200">R$ 100 - R$ 200</option>
+                            <option value="200+">Acima de R$ 200</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="products-grid">
+                    <!-- Produtos serão carregados aqui -->
+                </div>
+            </div>
+            <div id="carrinho-section" class="section">
+                <div class="section-header">
+                    <h1>Meu Carrinho</h1>
+                    <p>Revise seus itens antes de finalizar a compra</p>
+                </div>
+
+                <div class="cart-section">
+                    <div id="cart-items">
+                        <!-- Itens do carrinho serão carregados aqui -->
+                    </div>
+                    <div class="cart-total" id="cart-total" style="display: none;">
+                        <div class="total-price">Total: R$ <span id="total-amount">0.00</span></div>
+                        <button class="checkout-btn" onclick="finalizarCompra()">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+            <div id="pedidos-section" class="section">
+                <div class="section-header">
+                    <h1>Meus Pedidos</h1>
+                    <p>Acompanhe o status dos seus pedidos</p>
+                </div>
+
+                <div class="orders-list" id="orders-list">
+                    <!-- Pedidos serão carregados aqui -->
+                </div>
+            </div>
+
+            <div id="perfil-section" class="section">
+                <div class="section-header">
+                    <h1>Meu Perfil</h1>
+                    <p>Gerencie suas informações pessoais</p>
+                </div>
+
+                <form class="profile-form" id="profile-form" onsubmit="salvarPerfil(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 style="margin-bottom: 15px; color: #333;">Alterar Senha (opcional)</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="senha-atual">Senha Atual</label>
+                                <input type="password" id="senha-atual" placeholder="Digite sua senha atual">
+                                <small style="color: #666;">Deixe em branco para não alterar a senha</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="nova-senha">Nova Senha</label>
+                                <input type="password" id="nova-senha" placeholder="Digite a nova senha">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmar-senha">Confirmar Nova Senha</label>
+                            <input type="password" id="confirmar-senha" placeholder="Confirme a nova senha">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" placeholder="01234-567" maxlength="9" onblur="buscarCEP()"
+                            oninput="formatarCEP(this)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rua">Rua</label>
+                        <input type="text" id="rua" placeholder="Rua das Flores, 123" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" placeholder="Centro" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" placeholder="123" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" placeholder="Salvador" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="complemento">Complemento</label>
+                        <input type="text" id="complemento" placeholder="AP 10">
+                    </div>
+
+                    <div style="text-align: center; margin-block-start: 30px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 12px 30px; font-size: 16px;">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-product-name">Produto</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modal-product-content">
+                <!-- Conteúdo do produto será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="JS/dash_cliente.js"></script>
+</body>
+</html>
