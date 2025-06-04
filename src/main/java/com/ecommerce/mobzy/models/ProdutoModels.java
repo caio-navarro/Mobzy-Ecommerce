@@ -29,6 +29,9 @@ public class ProdutoModels {
     @Column(name = "status")
     private String status = "ativo";
 
+    @Column(name = "imagem_url")
+    private String imagemUrl; 
+
     @OneToMany(mappedBy = "produto")
     private List<ItemCarrinhoModels> itensCarrinho;
 
@@ -53,6 +56,14 @@ public class ProdutoModels {
 
     public void setId(int id) {
         this.idProduto = id;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+    
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 
     public String getStatus() {
