@@ -9,7 +9,6 @@ public class Cliente {
 
     private int idCliente;
     private String nome;
-    private LocalDate dataNascimento;
     private String email;
     private String telefone;
     private String cpf;
@@ -25,7 +24,6 @@ public class Cliente {
 
         cliente.setIdCliente(clienteModels.getIdCliente());
         cliente.setNome(clienteModels.getNome());
-        cliente.setDataNascimento(clienteModels.getDataNascimento());
         cliente.setEmail(clienteModels.getEmail());
         cliente.setTelefone(clienteModels.getTelefone());
         cliente.setCpf(clienteModels.getCpf());
@@ -123,14 +121,6 @@ public class Cliente {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
     }
 
     public String getEmail() {

@@ -1,7 +1,6 @@
 package com.ecommerce.mobzy.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "clientes")
@@ -14,9 +13,6 @@ public class ClienteModels {
 
     @Column(name = "nome")
     private String nome;
-
-    @Column(name = "data_nascimento")
-    private LocalDate dataNascimento;
 
     @Column(name = "email")
     private String email;
@@ -50,7 +46,7 @@ public class ClienteModels {
     public ClienteModels() {
     }
 
-    public ClienteModels(CarrinhoModels carrinho, String telefone, String nome, String senha, Integer idEnderecoCliente, Integer idCarrinho, EnderecoClienteModels enderecoCliente, String email, LocalDate dataNascimento, String cpf, String role) {
+    public ClienteModels(CarrinhoModels carrinho, String telefone, String nome, String senha, Integer idEnderecoCliente, Integer idCarrinho, EnderecoClienteModels enderecoCliente, String email, String cpf, String role) {
         this.carrinho = carrinho;
         this.telefone = telefone;
         this.nome = nome;
@@ -59,7 +55,6 @@ public class ClienteModels {
         this.idCarrinho = idCarrinho;
         this.enderecoCliente = enderecoCliente;
         this.email = email;
-        this.dataNascimento = dataNascimento;
         this.cpf = cpf;
         this.role = role;
     }
@@ -118,14 +113,6 @@ public class ClienteModels {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
     }
 
     public String getCpf() {

@@ -10,7 +10,6 @@ public class EnderecoCliente {
     private String bairro;
     private String numero;
     private String cidade;
-    private String estado;
     private String complemento;
 
     public static EnderecoCliente toEndereco(EnderecoClienteModels enderecoModels){
@@ -22,7 +21,6 @@ public class EnderecoCliente {
         endereco.setBairro(enderecoModels.getBairro());
         endereco.setNumero(enderecoModels.getNumero());
         endereco.setCidade(enderecoModels.getCidade());
-        endereco.setEstado(enderecoModels.getEstado());
 
         return endereco;
     }
@@ -45,12 +43,6 @@ public class EnderecoCliente {
         }
     }
 
-    public void estadoIsInvalid() {
-        if (estado == null || estado.trim().isEmpty() || estado.length() != 2) {
-            throw new IllegalArgumentException("O estado deve ser uma sigla válida de 2 caracteres.");
-        }
-    }
-
     public void cepIsInvalid() {
         String cepRegex = "^\\d{8}$";
         if (cep == null || !cep.matches(cepRegex)) {
@@ -62,19 +54,17 @@ public class EnderecoCliente {
         logradouroIsInvalid();
         numeroIsInvalid();
         cidadeIsInvalid();
-        //estadoIsInvalid();
         cepIsInvalid();
     }
 
     public EnderecoCliente() {
     }
 
-    public EnderecoCliente(String bairro, String cep, String cidade, String complemento, String estado, String logradouro, String numero) {
+    public EnderecoCliente(String bairro, String cep, String cidade, String complemento, String logradouro, String numero) {
         this.bairro = bairro;
         this.cep = cep;
         this.cidade = cidade;
         this.complemento = complemento;
-        this.estado = estado;
         this.logradouro = logradouro;
         this.numero = numero;
     }
@@ -109,14 +99,6 @@ public class EnderecoCliente {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public int getIdEnderecoCliente() {
