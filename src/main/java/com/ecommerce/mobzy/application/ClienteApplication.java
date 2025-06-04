@@ -68,11 +68,11 @@ public class ClienteApplication {
         ClienteModels cliente = clienteRepository.findByEmail(clienteModels.getEmail());
 
         if(cliente == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado.");
         }
 
         if(!cliente.getSenha().equals(clienteModels.getSenha())){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha incorretos.");
         }
 
         return ResponseEntity.ok(cliente);

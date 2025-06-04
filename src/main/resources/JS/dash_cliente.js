@@ -190,8 +190,86 @@ function closeModal() {
     document.getElementById('product-modal').style.display = 'none';
 }
 
-// Função para salvar perfil - CORRIGIDA para manter a senha
-// Função para salvar perfil - VERSÃO SEGURA que preserva a senha
+// ============== FUNÇÕES DE FORMATAÇÃO ==============
+
+// Função para formatar CPF enquanto digita (apenas visual)
+function formatarCPF(input) {
+    let valor = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+    
+    // Limita a 11 dígitos
+    valor = valor.substring(0, 11);
+    
+    // Aplica a máscara: 000.000.000-00
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3}\.\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3}\.\d{3}\.\d{3})(\d{2})/, '$1-$2');
+    
+    input.value = valor;
+}
+
+// Função para formatar telefone enquanto digita (apenas visual)
+function formatarTelefone(input) {
+    let valor = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+    
+    // Limita a 11 dígitos (celular) ou 10 dígitos (fixo)
+    valor = valor.substring(0, 11);
+    
+    // Aplica a máscara baseada na quantidade de dígitos
+    if (valor.length <= 10) {
+        // Telefone fixo: (00) 0000-0000
+        valor = valor.replace(/(\d{2})(\d)/, '($1) $2');
+        valor = valor.replace(/(\(\d{2}\) \d{4})(\d)/, '$1-$2');
+    } else {
+        // Celular: (00) 00000-0000
+        valor = valor.replace(/(\d{2})(\d)/, '($1) $2');
+        valor = valor.replace(/(\(\d{2}\) \d{5})(\d)/, '$1-$2');
+    }
+    
+    input.value = valor;
+}
+
+// Função para obter apenas números do CPF
+function obterCPFLimpo(cpfFormatado) {
+    return cpfFormatado.replace(/\D/g, '');
+}
+
+// Função para obter apenas números do telefone
+function obterTelefoneLimpo(telefoneFormatado) {
+    return telefoneFormatado.replace(/\D/g, '');
+}
+
+// Função para formatar CPF para exibição (recebe números, retorna formatado)
+function formatarCPFParaExibicao(cpfNumeros) {
+    if (!cpfNumeros || cpfNumeros.length !== 11) return cpfNumeros;
+    
+    return cpfNumeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+// Função para formatar telefone para exibição (recebe números, retorna formatado)
+function formatarTelefoneParaExibicao(telefoneNumeros) {
+    if (!telefoneNumeros) return telefoneNumeros;
+    
+    if (telefoneNumeros.length === 10) {
+        // Telefone fixo: (00) 0000-0000
+        return telefoneNumeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    } else if (telefoneNumeros.length === 11) {
+        // Celular: (00) 00000-0000
+        return telefoneNumeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    }
+    
+    return telefoneNumeros;
+}
+
+// Função para formatar CEP enquanto digita
+function formatarCEP(input) {
+    let valor = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    valor = valor.replace(/^(\d{5})(\d)/, '$1-$2'); // Adiciona hífen após 5 dígitos
+    input.value = valor;
+}
+
+// ============== FUNÇÃO SALVAR PERFIL ATUALIZADA ==============
+
+// Função para salvar perfil - VERSÃO ATUALIZADA com formatação
 async function salvarPerfil(event) {
     event.preventDefault();
 
@@ -229,7 +307,10 @@ async function salvarPerfil(event) {
     // Validações básicas dos dados obrigatórios
     const nome = document.getElementById('nome').value.trim();
     const email = document.getElementById('email').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
+    const telefoneFormatado = document.getElementById('telefone').value.trim();
+    
+    // CONVERTER TELEFONE PARA APENAS NÚMEROS
+    const telefone = obterTelefoneLimpo(telefoneFormatado);
 
     if (!nome || !email || !telefone) {
         alert('Por favor, preencha todos os campos obrigatórios (Nome, E-mail e Telefone).');
@@ -243,13 +324,17 @@ async function salvarPerfil(event) {
         return;
     }
 
+    if (telefone.length < 10 || telefone.length > 11) {
+        alert('Por favor, insira um telefone válido.');
+        return;
+    }
+
     try {
         const botaoSalvar = document.querySelector('#profile-form button[type="submit"]');
         const textoOriginal = botaoSalvar.innerHTML;
         botaoSalvar.innerHTML = 'Salvando...';
         botaoSalvar.disabled = true;
 
-        // PASSO 1: Buscar dados atuais do cliente para preservar campos não alterados
         console.log('Buscando dados atuais do cliente...');
         const responseAtual = await fetch(`http://localhost:8080/cliente/buscar/${idCliente}`);
 
@@ -268,7 +353,6 @@ async function salvarPerfil(event) {
             console.warn('Não foi possível buscar dados atuais do cliente');
         }
 
-        // PASSO 2: Processar endereço
         const dadosEndereco = {
             idCliente: parseInt(idCliente),
             cep: document.getElementById('cep').value.replace(/\D/g, ''),
@@ -281,7 +365,6 @@ async function salvarPerfil(event) {
 
         let idEnderecoCliente = clienteAtual.idEnderecoCliente || null;
 
-        // Criar/atualizar endereço se houver dados
         if (dadosEndereco.cep || dadosEndereco.logradouro) {
             console.log('Criando/atualizando endereço:', dadosEndereco);
 
@@ -316,30 +399,30 @@ async function salvarPerfil(event) {
             console.log('Endereço processado com ID:', idEnderecoCliente);
         }
 
-        // PASSO 3: Montar dados do cliente preservando campos existentes
+        const cpfFormatado = document.getElementById('cpf').value.trim();
+        const cpfLimpo = obterCPFLimpo(cpfFormatado); 
+
         const dadosCliente = {
             idCliente: parseInt(idCliente),
             nome: nome,
             email: email,
-            telefone: telefone,
-            cpf: document.getElementById('cpf').value.trim(),
-            // PRESERVAR senha atual se não for alterada
+            telefone: telefone, 
+            cpf: cpfLimpo,
             senha: novaSenha || clienteAtual.senha || undefined
         };
 
-        // Adicionar ID do endereço
         if (idEnderecoCliente) {
             dadosCliente.idEnderecoCliente = idEnderecoCliente;
         }
 
-        // Remover campos undefined para não enviar ao backend
         Object.keys(dadosCliente).forEach(key => {
             if (dadosCliente[key] === undefined) {
                 delete dadosCliente[key];
             }
         });
 
-        // PASSO 4: Atualizar cliente
+        console.log('Dados do cliente a serem enviados:', { ...dadosCliente, senha: '[OCULTA]' });
+
         const responseCliente = await fetch('http://localhost:8080/cliente/cadastrar', {
             method: 'POST',
             headers: {
@@ -375,11 +458,10 @@ async function salvarPerfil(event) {
 
         console.log('Cliente atualizado com sucesso');
 
-        // Atualizar localStorage
         localStorage.setItem('nomeCliente', dadosCliente.nome);
         localStorage.setItem('emailCliente', dadosCliente.email);
         localStorage.setItem('telCliente', dadosCliente.telefone);
-        localStorage.setItem('cpfCliente', dadosCliente.cpf);
+        localStorage.setItem('cpfCliente', dadosCliente.cpf); 
         localStorage.setItem('cepCliente', dadosEndereco.cep);
         localStorage.setItem('bairroCliente', dadosEndereco.bairro);
         localStorage.setItem('cidadeCliente', dadosEndereco.cidade);
@@ -387,7 +469,6 @@ async function salvarPerfil(event) {
         localStorage.setItem('numeroCliente', dadosEndereco.numero);
         localStorage.setItem('complementoCliente', dadosEndereco.complemento);
 
-        // Limpar campos de senha após salvamento bem-sucedido
         document.getElementById('senha-atual').value = '';
         document.getElementById('nova-senha').value = '';
         document.getElementById('confirmar-senha').value = '';
@@ -407,16 +488,14 @@ async function salvarPerfil(event) {
     }
 }
 
-// Função para buscar CEP
 async function buscarCEP() {
-    const cep = document.getElementById('cep').value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    const cep = document.getElementById('cep').value.replace(/\D/g, ''); 
 
     if (cep.length !== 8) {
-        return; // CEP deve ter exatamente 8 dígitos
+        return; 
     }
 
     try {
-        // Mostrar loading (opcional)
         const campos = ['rua', 'bairro', 'cidade'];
         campos.forEach(campo => {
             document.getElementById(campo).value = 'Buscando...';
@@ -432,17 +511,14 @@ async function buscarCEP() {
             return;
         }
 
-        // Preencher os campos com os dados retornados
         document.getElementById('rua').value = data.logradouro || '';
         document.getElementById('bairro').value = data.bairro || '';
         document.getElementById('cidade').value = data.localidade || '';
 
-        // Habilitar os campos novamente
         campos.forEach(campo => {
             document.getElementById(campo).disabled = false;
         });
 
-        // Focar no campo número se a rua foi preenchida
         if (data.logradouro) {
             document.getElementById('numero').focus();
         }
@@ -463,13 +539,6 @@ function limparCamposEndereco() {
     });
 }
 
-// Função para formatar CEP enquanto digita
-function formatarCEP(input) {
-    let valor = input.value.replace(/\D/g, ''); // Remove tudo que não é número
-    valor = valor.replace(/^(\d{5})(\d)/, '$1-$2'); // Adiciona hífen após 5 dígitos
-    input.value = valor;
-}
-
 // Função de logout
 function logout() {
     if (confirm('Deseja realmente sair?')) {
@@ -485,11 +554,11 @@ window.onclick = function (event) {
     }
 }
 
-// Inicialização
+
+// Inicialização 
 document.addEventListener('DOMContentLoaded', function () {
     carregarProdutos();
 
-    // Carregar dados do perfil
     const idCliente = localStorage.getItem('idCliente');
     const nomeCliente = localStorage.getItem('nomeCliente');
     const emailCliente = localStorage.getItem('emailCliente');
@@ -502,11 +571,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const complementoCliente = localStorage.getItem('complementoCliente');
     const numeroCliente = localStorage.getItem('numeroCliente');
 
-    // Verificar se há dados salvos e preencher os campos
     if (nomeCliente) document.getElementById("nome").value = nomeCliente;
     if (emailCliente) document.getElementById("email").value = emailCliente;
-    if (telCliente) document.getElementById("telefone").value = telCliente;
-    if (cpfCliente) document.getElementById("cpf").value = cpfCliente;
+
+    if (telCliente) {
+        document.getElementById("telefone").value = formatarTelefoneParaExibicao(telCliente);
+    }
+ 
+    if (cpfCliente) {
+        document.getElementById("cpf").value = formatarCPFParaExibicao(cpfCliente);
+    }
+    
     if (cepCliente) document.getElementById("cep").value = cepCliente;
     if (numeroCliente) document.getElementById("numero").value = numeroCliente;
     if (ruaCliente) document.getElementById("rua").value = ruaCliente;
@@ -514,21 +589,222 @@ document.addEventListener('DOMContentLoaded', function () {
     if (cidadeCliente) document.getElementById("cidade").value = cidadeCliente;
     if (complementoCliente) document.getElementById("complemento").value = complementoCliente;
 
-    // Se não houver ID do cliente, pode ser necessário fazer login novamente
     if (!idCliente) {
         console.warn('ID do cliente não encontrado no localStorage');
     }
 });
 
-// Placeholder functions for cart functionality
 function adicionarAoCarrinho(produtoId) {
-    // TODO: Implementar funcionalidade do carrinho
     console.log('Adicionar ao carrinho produto ID:', produtoId);
     alert('Funcionalidade do carrinho ainda não implementada');
 }
 
+// Variável global para armazenar itens do carrinho
+let carrinho = [];
+
+// Função para adicionar produto ao carrinho
+function adicionarAoCarrinho(produtoId) {
+    const produto = produtos.find(p => p.idProduto === produtoId);
+    if (!produto) {
+        alert('Produto não encontrado!');
+        return;
+    }
+
+    // Verificar se o produto já está no carrinho
+    const itemExistente = carrinho.find(item => item.produto.idProduto === produtoId);
+    
+    if (itemExistente) {
+        itemExistente.quantidade += 1;
+    } else {
+        carrinho.push({
+            produto: produto,
+            quantidade: 1
+        });
+    }
+
+    atualizarContadorCarrinho();
+    mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`);
+    
+    console.log('Carrinho atualizado:', carrinho);
+}
+
+// Função para remover produto do carrinho
+function removerDoCarrinho(produtoId) {
+    const index = carrinho.findIndex(item => item.produto.idProduto === produtoId);
+    if (index > -1) {
+        carrinho.splice(index, 1);
+        atualizarContadorCarrinho();
+        carregarCarrinho();
+    }
+}
+
+// Função para alterar quantidade de um item no carrinho
+function alterarQuantidade(produtoId, novaQuantidade) {
+    const item = carrinho.find(item => item.produto.idProduto === produtoId);
+    if (item) {
+        if (novaQuantidade <= 0) {
+            removerDoCarrinho(produtoId);
+        } else {
+            item.quantidade = novaQuantidade;
+            atualizarContadorCarrinho();
+            carregarCarrinho();
+        }
+    }
+}
+
+// Função para atualizar contador do carrinho
+function atualizarContadorCarrinho() {
+    const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    document.getElementById('cart-count').textContent = totalItens;
+}
+
+// Função para calcular total do carrinho
+function calcularTotalCarrinho() {
+    return carrinho.reduce((total, item) => total + (item.produto.preco * item.quantidade), 0);
+}
+
+// Função para carregar itens do carrinho na interface
+function carregarCarrinho() {
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    
+    if (carrinho.length === 0) {
+        cartItems.innerHTML = `
+            <div class="empty-cart">
+                <h3>Seu carrinho está vazio</h3>
+                <p>Adicione produtos para continuar comprando</p>
+                <button class="btn btn-primary" onclick="showSection('produtos')">
+                    Ver Produtos
+                </button>
+            </div>
+        `;
+        cartTotal.style.display = 'none';
+        return;
+    }
+
+    let cartHTML = '';
+    carrinho.forEach(item => {
+        const subtotal = item.produto.preco * item.quantidade;
+        cartHTML += `
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    ${item.produto.imagemUrl ? 
+                        `<img src="${item.produto.imagemUrl}" alt="${item.produto.nome}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">` : 
+                        '<div class="no-image" style="width: 80px; height: 80px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #666; border-radius: 8px; font-size: 12px;">Sem imagem</div>'
+                    }
+                </div>
+                <div class="cart-item-details">
+                    <h4>${item.produto.nome}</h4>
+                    <p class="cart-item-price">R$ ${item.produto.preco.toFixed(2)}</p>
+                    <p class="cart-item-description">
+                        ${item.produto.descricao ? item.produto.descricao.substring(0, 60) + '...' : 'Sem descrição'}
+                    </p>
+                </div>
+                <div class="cart-item-quantity">
+                    <label>Quantidade:</label>
+                    <div class="quantity-controls">
+                        <button onclick="alterarQuantidade(${item.produto.idProduto}, ${item.quantidade - 1})" 
+                                class="quantity-btn">-</button>
+                        <span class="quantity-display">${item.quantidade}</span>
+                        <button onclick="alterarQuantidade(${item.produto.idProduto}, ${item.quantidade + 1})" 
+                                class="quantity-btn">+</button>
+                    </div>
+                </div>
+                <div class="cart-item-subtotal">
+                    <p><strong>R$ ${subtotal.toFixed(2)}</strong></p>
+                    <button onclick="removerDoCarrinho(${item.produto.idProduto})" 
+                            class="btn btn-danger btn-small">
+                        Remover
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    cartItems.innerHTML = cartHTML;
+    
+    // Mostrar total
+    const total = calcularTotalCarrinho();
+    document.getElementById('total-amount').textContent = total.toFixed(2);
+    cartTotal.style.display = 'block';
+}
+
+// Função para mostrar notificação
+function mostrarNotificacao(mensagem) {
+    // Criar elemento de notificação
+    const notificacao = document.createElement('div');
+    notificacao.className = 'notification';
+    notificacao.textContent = mensagem;
+    notificacao.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    `;
+    
+    document.body.appendChild(notificacao);
+    
+    // Animar entrada
+    setTimeout(() => {
+        notificacao.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+        notificacao.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notificacao.parentNode) {
+                notificacao.parentNode.removeChild(notificacao);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Função para finalizar compra (placeholder)
 function finalizarCompra() {
-    // TODO: Implementar funcionalidade de finalização da compra
-    console.log('Finalizar compra');
-    alert('Funcionalidade de finalização da compra ainda não implementada');
+    if (carrinho.length === 0) {
+        alert('Seu carrinho está vazio!');
+        return;
+    }
+    
+    const total = calcularTotalCarrinho();
+    const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    
+    alert(`Compra finalizada!\nItens: ${totalItens}\nTotal: R$ ${total.toFixed(2)}\n\nFuncionalidade de pagamento ainda não implementada.`);
+}
+
+// Modificar a função showSection para carregar o carrinho quando necessário
+function showSection(sectionName) {
+    // Ocultar todas as seções
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Remover classe active de todos os nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Mostrar seção selecionada
+    document.getElementById(sectionName + '-section').classList.add('active');
+
+    // Adicionar classe active ao nav link correspondente
+    if (sectionName !== 'carrinho') {
+        const targetLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+        if (targetLink) {
+            targetLink.classList.add('active');
+        }
+    }
+
+    // Carregar carrinho se a seção carrinho foi selecionada
+    if (sectionName === 'carrinho') {
+        carregarCarrinho();
+    }
 }
