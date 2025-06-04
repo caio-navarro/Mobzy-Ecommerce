@@ -45,7 +45,10 @@ function renderizarProdutos(produtosParaRenderizar) {
         card.className = 'product-card';
         card.innerHTML = `
             <div class="product-image">
-                ${produto.imagem ? `<img src="${produto.imagem}" alt="${produto.nome}">` : 'Sem imagem'}
+                ${produto.imagemUrl ? 
+                    `<img src="${produto.imagemUrl}" alt="${produto.nome}" style="width: 100%; height: 200px; object-fit: cover;">` : 
+                    '<div style="width: 100%; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #666;">Sem imagem</div>'
+                }
             </div>
             <div class="product-info">
                 <div class="product-name">${produto.nome}</div>
@@ -73,19 +76,62 @@ function renderizarProdutos(produtosParaRenderizar) {
     });
 }
 
+// Função for preview da imagem
+function previewImagem(input) {
+    const preview = document.getElementById('image-preview');
+    const file = input.files[0];
+    
+    if (file) {
+        // Validar tipo de arquivo
+        if (!file.type.startsWith('image/')) {
+            alert('Por favor, selecione apenas arquivos de imagem.');
+            input.value = '';
+            preview.style.display = 'none';
+            return;
+        }
+        
+        // Validar tamanho (máximo 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('A imagem deve ter no máximo 5MB.');
+            input.value = '';
+            preview.style.display = 'none';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">`;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.style.display = 'none';
+    }
+}
+
 // Função para abrir modal
 function openModal(tipo, produto = null) {
     const modal = document.getElementById('product-modal');
     const title = document.getElementById('modal-title');
+    const preview = document.getElementById('image-preview');
     
     if (tipo === 'add-product') {
         title.textContent = 'Adicionar Produto';
         limparFormulario();
         produtoEditando = null;
+        preview.style.display = 'none';
     } else if (tipo === 'edit-product') {
         title.textContent = 'Editar Produto';
         preencherFormulario(produto);
         produtoEditando = produto;
+        
+        // Mostrar imagem atual se existir
+        if (produto.imagemUrl) {
+            preview.innerHTML = `<img src="${produto.imagemUrl}" alt="Imagem atual" style="max-width: 200px; max-height: 200px; object-fit: cover;">`;
+            preview.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+        }
     }
     
     modal.style.display = 'block';
@@ -96,6 +142,7 @@ function closeModal() {
     document.getElementById('product-modal').style.display = 'none';
     limparFormulario();
     produtoEditando = null;
+    document.getElementById('image-preview').style.display = 'none';
 }
 
 // Função para limpar formulário
@@ -110,17 +157,16 @@ function preencherFormulario(produto) {
     document.getElementById('product-stock').value = produto.estoque || '';
     document.getElementById('product-description').value = produto.descricao || '';
     document.getElementById('product-status').value = produto.status || 'ativo';
+    // Campo de imagem é limpo, mas mostramos preview da imagem atual
+    document.getElementById('product-image').value = '';
 }
 
-// Função para adicionar produto
-async function adicionarProduto(dadosProduto) {
+// Função para adicionar produto com imagem
+async function adicionarProduto(formData) {
     try {
         const response = await fetch('http://localhost:8080/produto/cadastrar', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dadosProduto)
+            body: formData
         });
 
         if (!response.ok) {
@@ -128,22 +174,10 @@ async function adicionarProduto(dadosProduto) {
             throw new Error(`Erro ao adicionar produto: ${response.status} - ${errorText}`);
         }
 
-        // Verifica se há conteúdo na resposta antes de tentar fazer parse JSON
         const responseText = await response.text();
-        let resultado = null;
-        
-        if (responseText && responseText.trim() !== '') {
-            try {
-                resultado = JSON.parse(responseText);
-            } catch (parseError) {
-                console.warn('Resposta não é JSON válido:', responseText);
-                resultado = { message: responseText };
-            }
-        }
-
         alert('Produto cadastrado com sucesso!');
-        carregarProdutos(); // Recarrega a lista
-        return resultado;
+        carregarProdutos();
+        return responseText;
     } catch (error) {
         console.error('Erro ao adicionar produto:', error);
         alert('Erro ao cadastrar produto: ' + error.message);
@@ -151,21 +185,15 @@ async function adicionarProduto(dadosProduto) {
     }
 }
 
-// Função para atualizar produto
-async function atualizarProduto(id, dadosProduto) {
+// Função para atualizar produto com imagem
+async function atualizarProduto(id, formData) {
     try {
-        // Inclui o ID no objeto de dados
-        const dadosComId = {
-            ...dadosProduto,
-            idProduto: id
-        };
+        // Adiciona o ID ao FormData
+        formData.append('idProduto', id);
 
         const response = await fetch(`http://localhost:8080/produto/atualizar`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dadosComId)
+            body: formData
         });
 
         if (!response.ok) {
@@ -173,22 +201,10 @@ async function atualizarProduto(id, dadosProduto) {
             throw new Error(`Erro ao atualizar produto: ${response.status} - ${errorText}`);
         }
 
-        // Verifica se há conteúdo na resposta antes de tentar fazer parse JSON
         const responseText = await response.text();
-        let resultado = null;
-        
-        if (responseText && responseText.trim() !== '') {
-            try {
-                resultado = JSON.parse(responseText);
-            } catch (parseError) {
-                console.warn('Resposta não é JSON válido:', responseText);
-                resultado = { message: responseText };
-            }
-        }
-
         alert('Produto atualizado com sucesso!');
-        carregarProdutos(); // Recarrega a lista
-        return resultado;
+        carregarProdutos();
+        return responseText;
     } catch (error) {
         console.error('Erro ao atualizar produto:', error);
         alert('Erro ao atualizar produto: ' + error.message);
@@ -222,9 +238,8 @@ async function excluirProduto(id) {
             throw new Error(`Erro ao excluir produto: ${response.status} - ${errorText}`);
         }
 
-        // Para DELETE, geralmente não esperamos conteúdo na resposta
         alert('Produto excluído com sucesso!');
-        carregarProdutos(); // Recarrega a lista
+        carregarProdutos();
     } catch (error) {
         console.error('Erro ao excluir produto:', error);
         alert('Erro ao excluir produto: ' + error.message);
@@ -255,27 +270,38 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // Coleta os dados do formulário
-        const formData = {
-            nome: document.getElementById('product-name').value.trim(),
-            preco: parseFloat(document.getElementById('product-price').value),
-            estoque: parseInt(document.getElementById('product-stock').value),
-            descricao: document.getElementById('product-description').value.trim(),
-            status: document.getElementById('product-status').value
-        };
+        // Criar FormData para envio
+        const formData = new FormData();
+        
+        // Adicionar campos do formulário
+        formData.append('nome', document.getElementById('product-name').value.trim());
+        formData.append('preco', document.getElementById('product-price').value);
+        formData.append('estoque', document.getElementById('product-stock').value);
+        formData.append('descricao', document.getElementById('product-description').value.trim());
+        formData.append('status', document.getElementById('product-status').value);
+        
+        // Adicionar imagem se foi selecionada
+        const imagemInput = document.getElementById('product-image');
+        if (imagemInput.files[0]) {
+            formData.append('imagem', imagemInput.files[0]);
+        }
 
         // Validação básica
-        if (!formData.nome || !formData.preco || !formData.estoque) {
+        const nome = formData.get('nome');
+        const preco = parseFloat(formData.get('preco'));
+        const estoque = parseInt(formData.get('estoque'));
+        
+        if (!nome || !preco || estoque === null || estoque === undefined) {
             alert('Por favor, preencha todos os campos obrigatórios!');
             return;
         }
 
-        if (formData.preco <= 0) {
+        if (preco <= 0) {
             alert('O preço deve ser maior que zero!');
             return;
         }
 
-        if (formData.estoque < 0) {
+        if (estoque < 0) {
             alert('O estoque não pode ser negativo!');
             return;
         }
@@ -291,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             closeModal();
         } catch (error) {
-            // Erro já tratado nas funções específicas
             console.error('Erro no submit:', error);
         }
     });
@@ -314,13 +339,11 @@ function exportarProdutos() {
         return;
     }
     
-    // Criar CSV simples
-    let csvContent = "Nome,Preço,Estoque,Descrição,Status\n";
+    let csvContent = "Nome,Preço,Estoque,Descrição,Status,URL da Imagem\n";
     produtos.forEach(produto => {
-        csvContent += `"${produto.nome}","${produto.preco}","${produto.estoque}","${produto.descricao || ''}","${produto.status}"\n`;
+        csvContent += `"${produto.nome}","${produto.preco}","${produto.estoque}","${produto.descricao || ''}","${produto.status}","${produto.imagemUrl || ''}"\n`;
     });
     
-    // Download do arquivo
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -330,46 +353,6 @@ function exportarProdutos() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-
-// Função para importar produtos
-function importarProdutos() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.csv';
-    input.onchange = function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const csv = e.target.result;
-                const lines = csv.split('\n');
-                const headers = lines[0].split(',');
-                
-                // Processar cada linha (exceto header)
-                for (let i = 1; i < lines.length; i++) {
-                    if (lines[i].trim()) {
-                        const values = lines[i].split(',');
-                        const produto = {
-                            nome: values[0]?.replace(/"/g, ''),
-                            preco: parseFloat(values[1]?.replace(/"/g, '')),
-                            estoque: parseInt(values[2]?.replace(/"/g, '')),
-                            descricao: values[3]?.replace(/"/g, ''),
-                            status: values[4]?.replace(/"/g, '') || 'ativo'
-                        };
-                        
-                        if (produto.nome && produto.preco && produto.estoque >= 0) {
-                            adicionarProduto(produto);
-                        }
-                    }
-                }
-                
-                alert('Importação concluída!');
-            };
-            reader.readAsText(file);
-        }
-    };
-    input.click();
 }
 
 // Fechar modal ao clicar fora dele

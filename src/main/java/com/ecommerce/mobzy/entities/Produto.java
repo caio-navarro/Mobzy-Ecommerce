@@ -10,16 +10,18 @@ public class Produto {
     private double preco;
     private int estoque;
     private String status;
+    private String imagemUrl;
 
     public Produto() {
     }
 
-    public Produto(int idProduto, String nome, String descricao, double preco, int estoque) {
+    public Produto(int idProduto, String nome, String descricao, double preco, int estoque, String imagemUrl) {
         this.idProduto = idProduto;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.estoque = estoque;
+        this.imagemUrl = imagemUrl;
         validar();
     }
 
@@ -66,8 +68,6 @@ public class Produto {
         precoIsInvalid();
         estoqueIsInvalid();
     }
-
-    // Getters e Setters
 
     public int getIdProduto() {
         return idProduto;
@@ -119,5 +119,13 @@ public class Produto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }
