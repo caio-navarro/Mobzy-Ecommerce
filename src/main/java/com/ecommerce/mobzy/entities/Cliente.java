@@ -14,6 +14,7 @@ public class Cliente {
     private String telefone;
     private String cpf;
     private String senha;
+    private String role;
     private Integer idEnderecoCliente;
     private EnderecoClienteModels enderecoCliente;
     private Integer idCarrinho;
@@ -33,6 +34,7 @@ public class Cliente {
         cliente.setEnderecoCliente(clienteModels.getEnderecoCliente());
         cliente.setIdCarrinho(clienteModels.getIdCarrinho());
         cliente.setCarrinho(clienteModels.getCarrinho());
+        cliente.setRole(clienteModels.getRole());
 
         return cliente;
     }
@@ -185,5 +187,13 @@ public class Cliente {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

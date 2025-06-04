@@ -30,6 +30,9 @@ public class ClienteModels {
     @Column(name = "senha")
     private String senha;
 
+    @Column(name = "role")
+    private String role = "usuario";
+
     @OneToOne
     @JoinColumn(name = "id_endereco_cliente", insertable = false, updatable = false)
     private EnderecoClienteModels enderecoCliente;
@@ -47,7 +50,7 @@ public class ClienteModels {
     public ClienteModels() {
     }
 
-    public ClienteModels(CarrinhoModels carrinho, String telefone, String nome, String senha, Integer idEnderecoCliente, Integer idCarrinho, EnderecoClienteModels enderecoCliente, String email, LocalDate dataNascimento, String cpf) {
+    public ClienteModels(CarrinhoModels carrinho, String telefone, String nome, String senha, Integer idEnderecoCliente, Integer idCarrinho, EnderecoClienteModels enderecoCliente, String email, LocalDate dataNascimento, String cpf, String role) {
         this.carrinho = carrinho;
         this.telefone = telefone;
         this.nome = nome;
@@ -58,6 +61,7 @@ public class ClienteModels {
         this.email = email;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
+        this.role = role;
     }
 
     public Integer getIdCarrinho() {
@@ -146,6 +150,14 @@ public class ClienteModels {
 
     public void setCarrinho(CarrinhoModels carrinho) {
         this.carrinho = carrinho;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }

@@ -35,10 +35,6 @@ public class ProdutoModels {
     @OneToMany(mappedBy = "produto")
     private List<ItemCarrinhoModels> itensCarrinho;
 
-    @ManyToOne
-    @JoinColumn(name = "id_administrador", insertable = false, updatable = false)
-    private AdministradorModels administrador;
-
     public ProdutoModels() {}
 
     public ProdutoModels(int idProduto, int estoque, String descricao, String nome, double preco) {
